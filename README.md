@@ -21,6 +21,11 @@ Clone this repo into your home folder, then run `stow .` from the .dotfiles fold
 - brew install tmux
 - install plugins with prefix (default is C-b) + shift + i
 
+## LazyGit
+https://github.com/jesseduffield/lazygit
+
+- brew install jesseduffield/lazygit/lazygit
+
 ## Neovim
 - brew install nvim
 - brew install ripgrep
