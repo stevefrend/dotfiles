@@ -4,10 +4,10 @@ opt.relativenumber = true
 opt.number = true
 
 -- tabs & indentation
-opt.tabstop = 2
-opt.shiftwidth = 2
-opt.expandtab = true
-opt.autoindent = true
+opt.tabstop = 2 -- 2 spaces for tabs
+opt.shiftwidth = 2 -- 2 spaces for indent
+opt.expandtab = true -- make tabs spaces
+opt.autoindent = true -- use previous line's indent when adding a new one
 
 
 -- line wrapping
