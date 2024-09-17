@@ -1,5 +1,10 @@
 # .dotfiles
 
+Clone this repo into your home folder, then run `stow .` from the .dotfiles folder after installing stow.
+
+## Stow
+- brew install stow
+
 ## zsh
 - brew install zsh
 - brew install oh-my-zsh
