@@ -19,4 +19,5 @@ Clone this repo into your home folder, then run `stow .` from the .dotfiles fold
 
 ## Neovim
 - brew install nvim
+- brew install ripgrep
 
