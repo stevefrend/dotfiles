@@ -9,6 +9,10 @@ Clone this repo into your home folder, then run `stow .` from the .dotfiles fold
 - brew install zsh
 - brew install oh-my-zsh
 
+## Nerd Fonts
+- brew install font-meslo-lg-nerd-font
+    - If using iTerm, need to go into settings and configure it to use the font above
+
 ## Aerospace (tiling manager for osx)
 - brew install aerospace
 - open aerospace app manually
