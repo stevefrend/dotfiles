@@ -34,6 +34,8 @@ https://github.com/jesseduffield/lazygit
 - brew install jesseduffield/lazygit/lazygit
 
 ## Neovim
+https://www.josean.com/posts/how-to-setup-neovim-2024
+
 - brew install nvim
 - brew install ripgrep
 
