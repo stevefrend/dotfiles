@@ -8,8 +8,7 @@ local km = vim.keymap
 -- km.set("i", "jk", "<ESC>")
 -- mode, keys, command
 
--- clear search highlights
-km.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+km.set("n", "<leader>cl", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- Tabs
 km.set("n", "<leader>t", ":tabnew<CR>") -- open new tab
