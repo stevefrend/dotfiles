@@ -1,39 +1,35 @@
-local opt = vim.opt
-
-opt.relativenumber = true
-opt.number = true
+vim.opt.relativenumber = true
+vim.opt.number = true
 
 -- tabs & indentation
-opt.tabstop = 2 -- 2 spaces for tabs
-opt.shiftwidth = 2 -- 2 spaces for indent
-opt.expandtab = true -- make tabs spaces
-opt.autoindent = true -- use previous line's indent when adding a new one
-
+vim.opt.tabstop = 2 -- 2 spaces for tabs
+vim.opt.shiftwidth = 2 -- 2 spaces for indent
+vim.opt.expandtab = true -- make tabs spaces
+vim.opt.autoindent = true -- use previous line's indent when adding a new one
 
 -- line wrapping
-opt.wrap = false
+vim.opt.wrap = false
 
 -- search
-opt.ignorecase = true
-opt.smartcase = true
-
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 -- appearance
-opt.termguicolors = true
-opt.background = "dark"
-opt.signcolumn = "yes"
+vim.opt.termguicolors = true
+-- set full transparancy and let terminal opacity be source of truth
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
-opt.backspace = "indent,eol,start"
+vim.opt.signcolumn = "yes"
+
+vim.opt.backspace = "indent,eol,start"
 
 -- clipboard
-opt.clipboard:append("unnamedplus")
+vim.opt.clipboard:append("unnamedplus")
 
 -- split windows
-opt.splitright = true
-opt.splitbelow = true
-
+vim.opt.splitright = true
+vim.opt.splitbelow = true
 
 -- makes dash part of a word for diw etc
-opt.iskeyword:append("-")
-
-
+vim.opt.iskeyword:append("-")
