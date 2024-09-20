@@ -59,6 +59,12 @@ Kickstart Guide:
 If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
 --]]
 
+-- TODO
+--[[
+-- 1. Figure out LSP for .vue files. Treesitter seems to work just fine, at least sytnax highlighting is on point.
+-- 2. Theming and colors. These themes look great, but something is off making it hard to read. Is it opacity?
+--]]
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
