@@ -19,9 +19,9 @@ ZSH_THEME="robbyrussell"
 zstyle ':omz:update' mode auto      # update automatically without asking
 
 # Uncomment the following line to disable auto-setting terminal title.
- DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 # Uncomment the following line to enable command auto-correction.
- ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -65,9 +65,12 @@ setopt hist_expire_dups_first
 setopt hist_ignore_dups
 setopt hist_verify
 
+# KEYBINDINGS
+
 # up and down arrows to go through history, like "nvim <up/down>"
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+# bindkey 'commandL' clear-screen - command works but clear-screen is not real
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
