@@ -14,7 +14,7 @@ ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
- HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 zstyle ':omz:update' mode auto      # update automatically without asking
 
