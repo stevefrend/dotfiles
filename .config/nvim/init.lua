@@ -240,13 +240,6 @@ require('lazy').setup({
       { '<C-l>', '<cmd><C-U>TmuxNavigateRight<cr>' },
     },
   },
-  -- Typescript Plugin https://github.com/pmizio/typescript-tools.nvim
-  {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {},
-  },
-
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -599,11 +592,25 @@ require('lazy').setup({
         gopls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         -- But for many setups, the LSP (`ts_ls`) will work just fine
+
+        -- Vue: can be setup in two modes: takeover or hybrid. With hybrid, Vue doesn't run a TS server, without hybrid it
+        -- runs its own server. TLDR with this approach Volar gets run for TS files even in non-vue projects. Does not seem
+        -- like we need to install or configure anything else, the only global install needed is @vue/typescript-plugin
+        -- and it probably needs to be the same version as whatever Mason.volar uses. Hybrid seems to be the correct way, but
+        -- could not get it to work for the life of me. All of this also means we aren't using pmizio/typescript-tools.nvim.
         --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        ts_ls = {},
-        volar = {},
+        -- Useful threads:
+        -- https://github.com/vuejs/language-tools/pull/4119
+        -- https://gist.github.com/johnsoncodehk/62580d04cb86e576e0e8d6bf1cb44e73
+        -- https://github.com/vuejs/language-tools#community-integration
+        volar = {
+          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+          init_options = {
+            vue = {
+              hybridMode = false,
+            },
+          },
+        },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
