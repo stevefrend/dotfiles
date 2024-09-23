@@ -59,12 +59,6 @@ Kickstart Guide:
 If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
 --]]
 
--- TODO
---[[
--- 1. Figure out LSP for .vue files. Treesitter seems to work just fine, at least sytnax highlighting is on point.
--- 2. Theming and colors. These themes look great, but something is off making it hard to read. Is it opacity?
---]]
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -855,8 +849,9 @@ require('lazy').setup({
       },
     },
     init = function()
-      -- vim.cmd.colorscheme 'rose-pine'
-      -- vim.cmd.hi 'Comment gui=none'
+      vim.cmd.colorscheme 'rose-pine'
+      -- -- You can configure highlights by doing something like:
+      vim.cmd.hi 'Comment gui=none'
     end,
   },
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
@@ -872,7 +867,6 @@ require('lazy').setup({
     },
     init = function()
       -- vim.cmd.colorscheme 'tokyonight-night'
-      -- -- You can configure highlights by doing something like:
       -- vim.cmd.hi 'Comment gui=none'
     end,
   },
@@ -883,8 +877,7 @@ require('lazy').setup({
       transparent = true,
     },
     init = function()
-      vim.cmd.colorscheme 'cyberdream'
-      -- -- You can configure highlights by doing something like:
+      -- vim.cmd.colorscheme 'cyberdream'
       -- vim.cmd.hi 'Comment gui=none'
     end,
   },
