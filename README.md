@@ -7,18 +7,15 @@ Clone this repo into your home folder, then run `stow .` from the .dotfiles fold
 
 ## zsh
 - brew install zsh
-- brew install oh-my-zsh
 - brew install zsh-autosuggestions
+- brew install jandedobbeleer/oh-my-posh/oh-my-posh
+- after running everything for zsh, `source %`
 
 ## Alacritty (Terminal)
 - brew install alacritty
-- brew install powerlevel10k
-- echo 'eval $(/opt/homebrew/bin/brew shellenv)' >> ~/.zprofile
-- source ~/.zprofile
 
 ## Nerd Fonts
 - brew install font-meslo-lg-nerd-font
-    - If using iTerm, need to go into settings and configure it to use the font above
 
 ## Aerospace (tiling manager for osx)
 - brew install aerospace
@@ -38,6 +35,3 @@ https://www.josean.com/posts/how-to-setup-neovim-2024
 
 - brew install nvim
 - brew install ripgrep
-
-asdf
-
