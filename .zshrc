@@ -1,9 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -25,6 +19,12 @@ ENABLE_CORRECTION="true"
 plugins=(git)
 
 source <(fzf --zsh)
+
+# Apple terminal does not support true color etc.
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+  eval "$(oh-my-posh init zsh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/bubbles.omp.json')"
+fi
+
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -52,8 +52,6 @@ alias c='clear'
 alias find_node='lsof -i :9000'
 alias kill_node='kill -9'
 
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-
 # history setup
 HISTFILE=$HOME/.zhistory
 SAVEHIST=1000
@@ -68,10 +66,7 @@ setopt hist_verify
 # up and down arrows to go through history, like "nvim <up/down>"
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
-# bindkey 'commandL' clear-screen - command works but clear-screen is not real
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 eval "$(zoxide init --cmd cd zsh)"
