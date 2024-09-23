@@ -400,13 +400,7 @@ alt-shift-l = ['join-with right', 'mode main']
 
  
 
-[[on-window-detected]]
-
-if.app-id = 'com.microsoft.VSCode'
-
-run = ['move-node-to-workspace 1']
-
- 
+# https://nikitabobko.github.io/AeroSpace/goodness#popular-apps-ids
 
 [[on-window-detected]]
 
@@ -418,9 +412,9 @@ run = ['move-node-to-workspace 2']
 
 [[on-window-detected]]
 
-if.app-id = 'com.googlecode.iterm2'
+if.app-id = 'org.alacritty'
 
-run = ['move-node-to-workspace 3']
+run = ['move-node-to-workspace 1']
 
  
 
@@ -435,6 +429,13 @@ run = ['move-node-to-workspace 4']
 [[on-window-detected]]
 
 if.app-id = 'com.microsoft.Outlook'
+
+run = ['move-node-to-workspace 5']
+
+ 
+[[on-window-detected]]
+
+if.app-id = 'com.openai.chat'
 
 run = ['move-node-to-workspace 5']
 
@@ -456,16 +457,16 @@ run = ['layout floating', 'move-node-to-workspace 8']
 
  
 
-[[on-window-detected]]
-
-if.app-id = 'com.openai.chat'
-
-run = ['layout floating', 'move-node-to-workspace 8']
-
- 
 
 [[on-window-detected]]
 
 if.app-id = 'md.obsidian'
 
-run = ['move-node-to-workspace 9']
+run = ['move-node-to-workspace 3']
+
+[[on-window-detected]]
+
+if.app-id = 'com.figma.Desktop'
+
+run = ['move-node-to-workspace 7']
+
