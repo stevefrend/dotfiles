@@ -15,6 +15,7 @@ ENABLE_CORRECTION="true"
 plugins=(git)
 
 source <(fzf --zsh)
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 
 # Preferred editor for local and remote sessions
@@ -42,19 +43,18 @@ alias kill_node='kill -9'
 
 # history setup
 HISTFILE=$HOME/.zhistory
-SAVEHIST=1000
-HISTSIZE=999
+SAVEHIST=500
+HISTSIZE=499
 setopt share_history
 setopt hist_expire_dups_first
 setopt hist_ignore_dups
 setopt hist_verify
 
-# KEYBINDINGS
 
+eval "$(zoxide init --cmd cd zsh)"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=252" # make suggested auto completes a bit brighter
+
+# KEYBINDINGS
 # up and down arrows to go through history, like "nvim <up/down>"
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
-
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-eval "$(zoxide init --cmd cd zsh)"
