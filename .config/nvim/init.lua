@@ -820,21 +820,22 @@ require('lazy').setup({
       }
     end,
   },
-  -- {
-  --   'rose-pine/neovim',
-  --   priority = 1000,
-  --   name = 'rose-pine',
-  --   opts = {
-  --     variant = 'moon',
-  --     styles = {
-  --       transparency = true,
-  --     },
-  --   },
-  --   init = function()
-  --     vim.cmd.colorscheme 'rose-pine'
-  --     vim.cmd.hi 'Comment gui=none'
-  --   end,
-  -- },
+  -- COLOR THEME
+  {
+    'rose-pine/neovim',
+    priority = 1000,
+    name = 'rose-pine',
+    opts = {
+      variant = 'moon',
+      styles = {
+        transparency = true,
+      },
+    },
+    init = function()
+      -- vim.cmd.colorscheme 'rose-pine'
+      -- vim.cmd.hi 'Comment gui=none'
+    end,
+  },
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
   {
     'folke/tokyonight.nvim',
@@ -847,9 +848,21 @@ require('lazy').setup({
       },
     },
     init = function()
-      vim.cmd.colorscheme 'tokyonight-night'
-      -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
+      -- vim.cmd.colorscheme 'tokyonight-night'
+      -- -- You can configure highlights by doing something like:
+      -- vim.cmd.hi 'Comment gui=none'
+    end,
+  },
+  {
+    'scottmckendry/cyberdream.nvim',
+    priority = 1000, -- Make sure to load this before all the other start plugins.
+    opts = {
+      transparent = true,
+    },
+    init = function()
+      vim.cmd.colorscheme 'cyberdream'
+      -- -- You can configure highlights by doing something like:
+      -- vim.cmd.hi 'Comment gui=none'
     end,
   },
 
