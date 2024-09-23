@@ -223,6 +223,12 @@ require('lazy').setup({
       },
     },
   },
+  {
+    'folke/zen-mode.nvim',
+    config = function()
+      vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<cr>', { desc = '[S]earch [H]elp' })
+    end,
+  },
   -- TMUX Vim navigation
   {
     'christoomey/vim-tmux-navigator',
