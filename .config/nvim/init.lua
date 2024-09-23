@@ -226,7 +226,24 @@ require('lazy').setup({
   {
     'folke/zen-mode.nvim',
     config = function()
-      vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<cr>', { desc = '[S]earch [H]elp' })
+      vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<cr>', { desc = '[Z]en Mode (Center Layout)' })
+    end,
+  },
+  {
+    'stevearc/oil.nvim',
+    dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+    config = function()
+      require('oil').setup {
+        -- colums = {'icon'},
+        keymaps = {
+          ['<C-h>'] = false,
+        },
+        view_options = {
+          show_hidden = true,
+        },
+      }
+
+      vim.keymap.set('n', '<leader>e', require('oil').toggle_float, { desc = 'Open File Tree' })
     end,
   },
   -- TMUX Vim navigation
