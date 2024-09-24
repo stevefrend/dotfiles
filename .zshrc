@@ -40,8 +40,7 @@ alias ls='ls --color'
 alias c='clear'
 alias find_node='lsof -i :9000'
 alias kill_node='kill -9'
-alias tmuxfrontend='~/dotfiles/tmuxFrontendInitializer.sh'
-alias worktree='~/dotfiles/new_worktree.sh'
+alias session='~/dotfiles/tmuxFrontendInitializer.sh'
 
 # history setup
 HISTFILE=$HOME/.zhistory
