@@ -13,12 +13,12 @@ SESSION_NAME=$1
 tmux new-session -d -s "$SESSION_NAME" -n "nvim"
 
 # Create new windows in the specified order
-tmux new-window -t "$SESSION_NAME":2 -n "vite"
-tmux new-window -t "$SESSION_NAME":3 -n "vitest"
-tmux new-window -t "$SESSION_NAME":4 -n "git"
-tmux new-window -t "$SESSION_NAME":5 -n "zsh"
+tmux new-window -t "$SESSION_NAME":2 -n "servers"
+tmux split-window -h -t "$SESSION_NAME":2
 
-# Switch to the first window (nvim)
+tmux new-window -t "$SESSION_NAME":4 -n "zsh"
+tmux new-window -t "$SESSION_NAME":5 -n "git"
+
 tmux select-window -t "$SESSION_NAME":1
 
 # Attach to the session
