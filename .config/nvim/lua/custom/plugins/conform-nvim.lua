@@ -1,3 +1,8 @@
+-- Important: since we're using prettierd here, we need to make sure the daemon is running or formatting will be weird
+-- Do this by running `prettierd status/start/stop`. See all commands with prettierd -h.
+-- Another caveat, this daemon can build up over time, so it's probably good to purge all node processes now and again
+-- or just restart the computer.
+
 return { -- Autoformat
   'stevearc/conform.nvim',
   event = { 'BufWritePre' },
@@ -14,7 +19,7 @@ return { -- Autoformat
   },
   opts = {
     notify_on_error = false,
-    format_after_save = function(bufnr)
+    format_on_save = function(bufnr)
       -- Disable "format_on_save lsp_fallback" for languages that don't
       -- have a well standardized coding style. You can add additional
       -- languages here or re-enable it for the disabled ones.
@@ -26,7 +31,7 @@ return { -- Autoformat
         lsp_format_opt = 'fallback'
       end
       return {
-        timeout_ms = 1000,
+        timeout_ms = 3000,
         lsp_format = lsp_format_opt,
       }
     end,
@@ -36,10 +41,10 @@ return { -- Autoformat
       -- python = { "isort", "black" },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
-      javascript = { 'prettier' },
-      typescript = { 'prettier' },
-      vue = { 'prettier' },
-      json = { 'prettier' },
+      javascript = { 'prettierd' },
+      typescript = { 'prettierd' },
+      vue = { 'prettierd' },
+      json = { 'prettierd' },
     },
   },
 }
