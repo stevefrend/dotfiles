@@ -7,25 +7,25 @@ return { -- File switcher
   config = function()
     local harpoon = require 'harpoon'
 
-    vim.keymap.set('n', '<leader>ha', function()
+    vim.keymap.set('n', '<leader>hh', function()
       harpoon:list():add()
-    end, { desc = '[H]arpoon [A]dd' })
+    end, { desc = 'Harpoon Add' })
 
     vim.keymap.set('n', '<leader>hl', function()
       harpoon.ui:toggle_quick_menu(harpoon:list())
-    end, { desc = '[H]arpoon [L]ist' })
+    end, { desc = 'Harpoon List' })
 
-    vim.keymap.set('n', '<C-a>', function()
+    vim.keymap.set('n', '<leader>ha', function()
       harpoon:list():select(1)
-    end, { desc = '[H]arpoon 1' })
-    vim.keymap.set('n', '<C-s>', function()
+    end, { desc = 'Harpoon 1' })
+    vim.keymap.set('n', '<leader>hs', function()
       harpoon:list():select(2)
-    end, { desc = '[H]arpoon 2' })
-    vim.keymap.set('n', '<C-d>', function()
+    end, { desc = 'Harpoon 2' })
+    vim.keymap.set('n', '<leader>hd', function()
       harpoon:list():select(3)
-    end, { desc = '[H]arpoon 4' })
-    vim.keymap.set('n', '<C-f>', function()
+    end, { desc = 'Harpoon 4' })
+    vim.keymap.set('n', '<leader>hf', function()
       harpoon:list():select(4)
-    end, { desc = '[H]arpoon 4' })
+    end, { desc = 'Harpoon 4' })
   end,
 }
