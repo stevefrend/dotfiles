@@ -33,11 +33,14 @@ return { -- Autocompletion
     --  into multiple repos for maintenance purposes.
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-path',
+    -- vscode style icons
+    'onsails/lspkind.nvim',
   },
   config = function()
     -- See `:help cmp`
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
+    local lspkind = require 'lspkind'
     luasnip.config.setup {}
 
     cmp.setup {
@@ -47,6 +50,29 @@ return { -- Autocompletion
         end,
       },
       completion = { completeopt = 'menu,menuone,noinsert' },
+      window = {
+        completion = {
+          border = 'rounded',
+          winhighlight = 'Normal:CmpNormal',
+        },
+        documentation = {
+          border = 'rounded',
+          winhighlight = 'Normal:CmpDocNormal',
+        },
+      },
+      formatting = {
+        format = lspkind.cmp_format {
+          mode = 'symbol_text', -- show only symbol annotations
+          maxwidth = 200,
+          ellipsis_char = '...',
+          show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+          -- The function below will be called before any actual modifications from lspkind
+          -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+          before = function(_, vim_item)
+            return vim_item
+          end,
+        },
+      },
 
       -- For an understanding of why these mappings were
       -- chosen, you will need to read `:help ins-completion`
@@ -66,12 +92,6 @@ return { -- Autocompletion
         --  This will auto-import if your LSP supports it.
         --  This will expand snippets if the LSP sent a snippet.
         ['<C-y>'] = cmp.mapping.confirm { select = true },
-
-        -- If you prefer more traditional completion keymaps,
-        -- you can uncomment the following lines
-        --['<CR>'] = cmp.mapping.confirm { select = true },
-        --['<Tab>'] = cmp.mapping.select_next_item(),
-        --['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
         -- Manually trigger a completion from nvim-cmp.
         --  Generally you don't need this, because nvim-cmp will display
