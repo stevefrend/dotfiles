@@ -23,6 +23,7 @@ return { -- Highlight, edit, and navigate code
       'go',
       'jsonc',
       'dockerfile',
+      'regex',
     },
     -- Autoinstall languages that are not installed
     auto_install = true,
