@@ -6,6 +6,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     'nvim-lua/plenary.nvim',
     -- Can be used with :Telescope frecency command and chain telescope options
     'nvim-telescope/telescope-frecency.nvim',
+    'debugloop/telescope-undo.nvim',
     { -- If encountering errors, see telescope-fzf-native README for installation instructions
       'nvim-telescope/telescope-fzf-native.nvim',
 
@@ -62,6 +63,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
         },
+        undo = {},
         fzf = {
           fuzzy = false, -- false will only do exact matching
           override_generic_sorter = true, -- override the generic sorter
@@ -75,6 +77,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
     pcall(require('telescope').load_extension, 'frecency')
+    pcall(require('telescope').load_extension, 'undo')
 
     -- See `:help telescope.builtin`
     local builtin = require 'telescope.builtin'
