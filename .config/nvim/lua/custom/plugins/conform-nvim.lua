@@ -45,6 +45,7 @@ return { -- Autoformat
       typescript = { 'prettierd' },
       vue = { 'prettierd' },
       json = { 'prettierd' },
+      markdown = { 'prettierd' },
     },
   },
 }
