@@ -36,7 +36,7 @@ export CUBEJS_DB_USER=pax8
 export CUBEJS_DB_PASS=jkT7NVwlE3?N6Jj8IH0mf#ts
 
 # ALIASES
-alias ls='ls -al --color'
+alias ls='ls -alF --color'
 alias c='clear'
 alias find_node='lsof -i :9000'
 alias kill_node='kill -9'
