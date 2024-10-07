@@ -3,6 +3,7 @@ return {
   cmd = 'Copilot',
   event = 'InsertEnter',
   opt = {},
+  enabled = vim.env.LOCATION == 'work',
   config = function()
     require('copilot').setup {
       panel = {
