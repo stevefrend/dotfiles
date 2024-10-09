@@ -172,6 +172,7 @@ return {
           },
         },
       },
+      tailwindcss = {},
       lua_ls = {
         -- cmd = {...},
         -- filetypes = { ...},

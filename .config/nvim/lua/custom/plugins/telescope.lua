@@ -47,6 +47,29 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
     -- [[ Configure Telescope ]]
     -- See `:help telescope` and `:help telescope.setup()`
+
+    -- These next two blocks are custom from the following github link, used to
+    -- format search results with file name first, path second and darker.
+    -- https://github.com/nvim-telescope/telescope.nvim/issues/2014#issuecomment-1873229658
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = 'TelescopeResults',
+      callback = function(ctx)
+        vim.api.nvim_buf_call(ctx.buf, function()
+          vim.fn.matchadd('TelescopeParent', '\t\t.*$')
+          vim.api.nvim_set_hl(0, 'TelescopeParent', { link = 'Comment' })
+        end)
+      end,
+    })
+
+    local function filenameFirst(_, path)
+      local tail = vim.fs.basename(path)
+      local parent = vim.fs.dirname(path)
+      if parent == '.' then
+        return tail
+      end
+      return string.format('%s\t\t%s', tail, parent)
+    end
+
     require('telescope').setup {
       -- You can put your default mappings / updates / etc. in here
       --  All the info you're looking for is in `:help telescope.setup()`
@@ -56,6 +79,14 @@ return { -- Fuzzy Finder (files, lsp, etc)
           horizontal = {
             height = 0.7,
           },
+        },
+      },
+      pickers = {
+        find_files = {
+          path_display = filenameFirst,
+        },
+        git_files = {
+          path_display = filenameFirst,
         },
       },
       -- pickers = {}
