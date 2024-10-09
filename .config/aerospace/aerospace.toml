@@ -240,7 +240,7 @@ alt-8 = 'workspace 8'
 
 alt-9 = 'workspace 9'
 
-alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
+# alt-a = 'workspace B'
 
 # alt-b = 'workspace B'
 
@@ -306,7 +306,7 @@ alt-shift-8 = 'move-node-to-workspace 8'
 
 alt-shift-9 = 'move-node-to-workspace 9'
 
-alt-shift-a = 'move-node-to-workspace A'
+# alt-shift-a = 'move-node-to-workspace A'
 
 # alt-shift-b = 'move-node-to-workspace B'
 
@@ -354,17 +354,17 @@ alt-shift-a = 'move-node-to-workspace A'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 
-alt-tab = 'workspace-back-and-forth'
+# alt-tab = 'workspace-back-and-forth'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
 
-alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+# alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
  
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 
-alt-shift-semicolon = 'mode service'
+# alt-shift-semicolon = 'mode service'
 
  
 
@@ -390,13 +390,13 @@ backspace = ['close-all-windows-but-current', 'mode main']
 
  
 
-alt-shift-h = ['join-with left', 'mode main']
-
-alt-shift-j = ['join-with down', 'mode main']
-
-alt-shift-k = ['join-with up', 'mode main']
-
-alt-shift-l = ['join-with right', 'mode main']
+# alt-shift-h = ['join-with left', 'mode main']
+#
+# alt-shift-j = ['join-with down', 'mode main']
+#
+# alt-shift-k = ['join-with up', 'mode main']
+#
+# alt-shift-l = ['join-with right', 'mode main']
 
  
 
