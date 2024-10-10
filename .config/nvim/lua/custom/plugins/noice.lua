@@ -50,4 +50,10 @@ return {
     --   If not available, we use `mini` as the fallback
     'rcarriga/nvim-notify',
   },
+  init = function()
+    local notify = require 'notify'
+    notify.setup {
+      stages = 'static',
+    }
+  end,
 }
