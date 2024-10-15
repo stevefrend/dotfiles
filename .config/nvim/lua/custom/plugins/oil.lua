@@ -6,6 +6,7 @@ return {
       keymaps = {
         -- still want to be able to use vim key in oil menu
         ['<C-h>'] = false,
+        ['<esc>'] = 'actions.close',
       },
       view_options = {
         show_hidden = true,

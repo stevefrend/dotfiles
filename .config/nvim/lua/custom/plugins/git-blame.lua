@@ -9,7 +9,7 @@ return {
   },
   config = function()
     vim.cmd [[GitBlameToggle]] -- default to toggling it off
-    vim.keymap.set('n', '<leader>gbo', '<CMD>GitBlameOpenCommitURL<CR>', { desc = '[G]it [B]lame [O]pen' })
-    vim.keymap.set('n', '<leader>gb', '<CMD>GitBlameToggle<CR>', { desc = '[Git] [B]lame Toggle' })
+    vim.keymap.set('n', '<leader>gbo', '<CMD>GitBlameOpenCommitURL<CR>', { desc = 'Git Blame Open' })
+    vim.keymap.set('n', '<leader>gb', '<CMD>GitBlameToggle<CR>', { desc = 'Git Blame Toggle' })
   end,
 }
