@@ -152,7 +152,18 @@ return {
     local servers = {
       gopls = {},
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-      -- But for many setups, the LSP (`ts_ls`) will work just fine
+      ts_ls = {
+        init_options = {
+          plugins = {
+            {
+              name = '@vue/typescript-plugin',
+              location = '/Users/sfrend/.nvm/versions/node/v20.11.1/lib/node_modules/@vue/language-server',
+              languages = { 'vue' },
+            },
+          },
+        },
+        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+      },
 
       -- Vue: can be setup in two modes: takeover or hybrid. With hybrid, Vue doesn't run a TS server, without hybrid it
       -- runs its own server. TLDR with this approach Volar gets run for TS files even in non-vue projects. Does not seem
@@ -165,18 +176,14 @@ return {
       -- https://gist.github.com/johnsoncodehk/62580d04cb86e576e0e8d6bf1cb44e73
       -- https://github.com/vuejs/language-tools#community-integration
       volar = {
-        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
         init_options = {
           vue = {
-            hybridMode = false,
+            hybridMode = true,
           },
         },
       },
       tailwindcss = {},
       lua_ls = {
-        -- cmd = {...},
-        -- filetypes = { ...},
-        -- capabilities = {},
         settings = {
           Lua = {
             completion = {
