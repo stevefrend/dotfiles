@@ -13,6 +13,7 @@ return {
       tsserver_plugins = {
         '@vue/typescript-plugin',
       },
+      expose_as_code_action = { 'remove_unused_imports' },
     },
   },
 }
