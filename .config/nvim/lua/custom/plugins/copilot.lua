@@ -10,13 +10,13 @@ return {
         enabled = false,
       },
       suggestion = {
-        auto_trigger = false,
-        debounce = 100,
+        auto_trigger = true,
+        debounce = 60,
         keymap = {
-          prev = '<leader>j',
-          next = '<leader>k',
-          accept = '<leader>l',
-          dismiss = '<leader>ll',
+          -- prev = '<leader>j',
+          -- next = '<leader>k',
+          accept = '<Tab>',
+          -- dismiss = '<leader>ll',
         },
       },
     }
