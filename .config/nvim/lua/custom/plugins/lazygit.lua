@@ -14,7 +14,7 @@ return {
 
     local g = require 'lazygit'
 
-    vim.keymap.set('n', '<leader>g', function()
+    vim.keymap.set('n', '<leader>gg', function()
       g.lazygit()
     end, { desc = 'Git' })
   end,
