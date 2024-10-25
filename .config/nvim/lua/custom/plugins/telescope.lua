@@ -75,6 +75,14 @@ return { -- Fuzzy Finder (files, lsp, etc)
       --  All the info you're looking for is in `:help telescope.setup()`
       --
       defaults = {
+        mappings = {
+          i = {
+            ['<C-y>'] = require('telescope.actions').select_default,
+          },
+          n = {
+            ['<C-y>'] = require('telescope.actions').select_default,
+          },
+        },
         layout_config = {
           horizontal = {
             height = 0.7,
@@ -111,7 +119,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
     pcall(require('telescope').load_extension, 'undo')
 
     -- Extension Keymaps
-    vim.keymap.set('n', '<leader>su', '<CMD>Telescope undo<CR>', { desc = '[ ] Find existing buffers' })
+    -- To restore, the default kepmap is <C-r>
+    vim.keymap.set('n', '<leader>su', '<CMD>Telescope undo<CR>', { desc = '[S]earch [U]ndo History' })
 
     -- See `:help telescope.builtin`
     local builtin = require 'telescope.builtin'
