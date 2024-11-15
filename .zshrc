@@ -39,6 +39,7 @@ alias c='clear'
 alias find_node='lsof -i :9000'
 alias kill_node='kill -9'
 alias session='~/dotfiles/.scripts/tmuxFrontendInitializer.sh'
+alias python='python3'
 
 # history setup
 HISTFILE=$HOME/.zhistory

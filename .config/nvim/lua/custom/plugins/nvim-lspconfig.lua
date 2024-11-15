@@ -177,6 +177,8 @@ return {
           },
         },
       },
+      basedpyright = {},
+      ruff = {},
     }
 
     -- Ensure the servers and tools above are installed
@@ -194,6 +196,8 @@ return {
       'prettier',
       'eslint',
       'stylua', -- Used to format Lua code
+      'basedpyright', -- Python LSP
+      'ruff', -- Python Formatter/Linter LSP
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
