@@ -12,6 +12,10 @@ return {
         hl.LineNrAbove = { fg = colors.magenta }
         hl.LineNrBelow = { fg = colors.magenta }
       end,
+      on_colors = function(colors)
+        -- make statusline transparent
+        colors.bg_statusline = colors.none
+      end,
     }
   end,
 }

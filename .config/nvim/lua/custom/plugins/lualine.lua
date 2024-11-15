@@ -27,9 +27,11 @@ end
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
-  opts = {},
   config = function()
     require('lualine').setup {
+      options = {
+        theme = 'tokyonight',
+      },
       tabline = {
         lualine_a = { { Harpoon_files, separator = { left = '', right = '' } } },
       },
