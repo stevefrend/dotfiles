@@ -8,8 +8,8 @@ return {
 	window_padding = {
 		left = 20,
 		right = 20,
-		top = 10,
-		bottom = 10,
+		top = 20,
+		bottom = 20,
 	},
 	window_decorations = "RESIZE", -- Buttonless decorations
 	window_background_opacity = 0.8,
