@@ -16,6 +16,6 @@ return {
 	enable_tab_bar = false,
 	macos_window_background_blur = 45, -- Blur effect for macOS
 
-	font = wezterm.font("JetBrainsMono Nerd Font", { harfbuzz_features = { "calt", "liga" } }),
+	font = wezterm.font("JetBrainsMono Nerd Font"),
 	font_size = 15.0,
 }
