@@ -33,6 +33,18 @@ export AWS_PROFILE=sso
 export CUBEJS_DB_USER=pax8
 export CUBEJS_DB_PASS=jkT7NVwlE3?N6Jj8IH0mf#ts
 
+# Colors for man pages/less
+# Bold
+export LESS_TERMCAP_mb=$'\e[1;35m'
+export LESS_TERMCAP_md=$'\e[1;35m'
+export LESS_TERMCAP_me=$'\e[0m'
+# Standout/highlight
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;44m'
+# Underline
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;32m'
+
 # ALIASES
 alias ls='ls -alF --color'
 alias k='clear'
@@ -58,3 +70,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=252" # make suggested auto completes a bit b
 # up and down arrows to go through history, like "nvim <up/down>"
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+
+# Needs to be at the end of the file
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
