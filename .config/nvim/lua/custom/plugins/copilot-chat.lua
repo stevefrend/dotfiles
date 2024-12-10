@@ -10,7 +10,7 @@ return {
     build = 'make tiktoken', -- Only on MacOS or Linux
     opts = {
       debug = false,
-      model = 'claude-3.5-sonnet',
+      model = 'gpt-4o-2024-08-06',
       window = {
         width = 0.45,
       },

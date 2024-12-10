@@ -17,3 +17,7 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 
 vim.keymap.set('n', '<leader><leader>s', ':w<CR>', { desc = 'Safe file' })
 vim.keymap.set('n', '<leader><leader>q', ':q!<CR>', { desc = 'Close file no save' })
+
+-- Make sure to not leave visual mode when denting
+vim.keymap.set('x', '>', '>gv', { desc = 'Indent', noremap = true, silent = true })
+vim.keymap.set('x', '<', '<gv', { desc = 'Outdent', noremap = true, silent = true })
