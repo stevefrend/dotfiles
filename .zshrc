@@ -1,3 +1,5 @@
+export LANG="en_US.UTF-8"
+
 # Apple terminal does not support true color etc.
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   eval "$(oh-my-posh init zsh --config '~/dotfiles/.config/ohmyposh/base.json')"
