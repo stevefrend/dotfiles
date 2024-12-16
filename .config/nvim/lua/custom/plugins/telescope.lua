@@ -91,6 +91,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
       pickers = {
         find_files = {
           path_display = filenameFirst,
+          hidden = true,
         },
         git_files = {
           path_display = filenameFirst,
