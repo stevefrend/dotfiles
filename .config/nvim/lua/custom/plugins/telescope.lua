@@ -74,6 +74,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
       --  All the info you're looking for is in `:help telescope.setup()`
       --
       defaults = {
+        path_display = filenameFirst,
+        file_ignore_patterns = {
+          'node_modules',
+          '.git',
+        },
         mappings = {
           i = {
             ['<C-y>'] = require('telescope.actions').select_default,
@@ -90,14 +95,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
       },
       pickers = {
         find_files = {
-          path_display = filenameFirst,
           hidden = true,
         },
-        git_files = {
-          path_display = filenameFirst,
-        },
       },
-      -- pickers = {}
       extensions = {
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
