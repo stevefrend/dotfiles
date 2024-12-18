@@ -1,5 +1,5 @@
 return {
   'Exafunction/codeium.vim',
   build = ':Codeium Auth',
-  enabled = vim.env.LOCATION == 'home',
+  enabled = vim.env.LOCATION == 'home' and false,
 }
