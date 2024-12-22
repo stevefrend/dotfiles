@@ -48,7 +48,7 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;32m'
 
 # ALIASES
-alias ls='ls -alF --color'
+alias ls='eza'
 alias k='clear'
 alias find_node='lsof -i :9000'
 alias kill_node='kill -9'
