@@ -181,6 +181,8 @@ return {
       basedpyright = {},
       -- Python Formatter and Linter
       ruff = {},
+      -- Python Debugger
+      debugpy = {},
     }
 
     -- Ensure the servers and tools above are installed
