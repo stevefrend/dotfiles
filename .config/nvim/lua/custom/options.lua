@@ -77,6 +77,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-vim.cmd.colorscheme 'tokyonight'
+vim.cmd.colorscheme 'rose-pine'
 -- You can configure highlights by doing something like:
 vim.cmd.hi 'Comment gui=none'
