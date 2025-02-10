@@ -2,7 +2,6 @@ return {
   {
     'CopilotC-Nvim/CopilotChat.nvim',
     enabled = vim.env.LOCATION == 'work',
-    branch = 'canary',
     dependencies = {
       { 'zbirenbaum/copilot.lua' }, -- or github/copilot.vim
       { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
@@ -10,7 +9,7 @@ return {
     build = 'make tiktoken', -- Only on MacOS or Linux
     opts = {
       debug = false,
-      model = 'gpt-4o-2024-08-06',
+      model = 'claude-3.5-sonnet',
       window = {
         width = 0.45,
       },
