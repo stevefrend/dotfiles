@@ -105,8 +105,8 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 outer.top =        80
 outer.bottom =     80
 
-outer.left =       300
-outer.right =      300
+outer.left =       200
+outer.right =      200
 
 
  
