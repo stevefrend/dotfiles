@@ -158,7 +158,7 @@ return {
       -- https://github.com/vuejs/language-tools/pull/4119
       -- https://gist.github.com/johnsoncodehk/62580d04cb86e576e0e8d6bf1cb44e73
       -- https://github.com/vuejs/language-tools#community-integration
-      volar = {
+      vue_ls = {
         init_options = {
           vue = {
             hybridMode = true,
