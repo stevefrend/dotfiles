@@ -24,5 +24,6 @@
 -- }
 return {
   'github/copilot.vim',
-  enabled = vim.env.LOCATION == 'work',
+  -- enabled = vim.env.LOCATION == 'work',
+  enabled = false,
 }
