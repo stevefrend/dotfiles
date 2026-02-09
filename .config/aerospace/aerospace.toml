@@ -2,7 +2,6 @@
 
 # After that, you can edit ~/.aerospace.toml to your liking
 
- 
 
 # You can use it to add commands that run after login to macOS user session.
 
@@ -12,7 +11,6 @@
 
 after-login-command = []
 
- 
 
 # You can use it to add commands that run after AeroSpace startup.
 
@@ -22,13 +20,11 @@ after-login-command = []
 
 after-startup-command = []
 
- 
 
 # Start AeroSpace at login
 
 start-at-login = false
 
- 
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 
@@ -36,7 +32,6 @@ enable-normalization-flatten-containers = true
 
 enable-normalization-opposite-orientation-for-nested-containers = true
 
- 
 
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 
@@ -46,13 +41,11 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 
 accordion-padding = 30
 
- 
 
 # Possible values: tiles|accordion
 
 default-root-container-layout = 'tiles'
 
- 
 
 # Possible values: horizontal|vertical|auto
 
@@ -62,7 +55,6 @@ default-root-container-layout = 'tiles'
 
 default-root-container-orientation = 'auto'
 
- 
 
 # Possible values: (qwerty|dvorak)
 
@@ -70,7 +62,6 @@ default-root-container-orientation = 'auto'
 
 key-mapping.preset = 'qwerty'
 
- 
 
 # Mouse follows focus when focused monitor changes
 
@@ -84,7 +75,6 @@ key-mapping.preset = 'qwerty'
 
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
- 
 
 # Gaps between windows (inner-*) and between monitor edges (outer-*).
 
@@ -102,14 +92,12 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
 [gaps]
 
-outer.top =        80
-outer.bottom =     80
+outer.top = 80
+outer.bottom = 80
 
-outer.left =       200
-outer.right =      200
+outer.left = 200
+outer.right = 200
 
-
- 
 
 # 'main' binding mode declaration
 
@@ -121,7 +109,6 @@ outer.right =      200
 
 [mode.main.binding]
 
- 
 
 # All possible keys:
 
@@ -143,15 +130,12 @@ outer.right =      200
 
 # - Arrows.         left, down, up, right
 
- 
 
 # All possible modifiers: cmd, alt, ctrl, shift
 
- 
 
 # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 
- 
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
 
@@ -219,7 +203,7 @@ alt-shift-9 = 'move-node-to-workspace 9'
 
 # alt-shift-a = 'move-node-to-workspace A'
 
- 
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 # Run "aerospace list-apps" to find ids
 
@@ -249,7 +233,7 @@ run = ['move-node-to-workspace 4']
 if.app-id = 'com.microsoft.Outlook'
 run = ['move-node-to-workspace 5']
 
- 
+
 [[on-window-detected]]
 
 if.app-id = 'com.openai.chat'
@@ -284,5 +268,3 @@ run = ['move-node-to-workspace 3']
 
 if.app-id = 'com.figma.Desktop'
 run = ['move-node-to-workspace 7']
-
-

@@ -1,5 +1,11 @@
 export LANG="en_US.UTF-8"
 
+# $LOCATION variable expected in ~/.zshenv
+if [[ "$LOCATION" == "work" ]]; then
+  echo "Loading Pax8 config from ~/.zshwork"
+  source ~/.zshwork
+fi
+
 # Apple terminal does not support true color etc.
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   eval "$(oh-my-posh init zsh --config '~/dotfiles/.config/ohmyposh/base.json')"
@@ -13,27 +19,16 @@ HYPHEN_INSENSITIVE="true"
 DISABLE_AUTO_TITLE="true"
 
 plugins=(git)
+ZSH_THEME="robbyrussell"
 
 source <(fzf --zsh)
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # ENV
-# pax8
-export AWS_PROFILE=sso
-export CUBEJS_DB_USER=pax8
-export CUBEJS_DB_PASS=jkT7NVwlE3?N6Jj8IH0mf#ts
 
 # Colors for man pages/less
 # Bold
@@ -75,3 +70,16 @@ bindkey '^[[B' history-search-forward
 
 # Needs to be at the end of the file
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# pyenv setup (python)
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
+
+export ZSH="$HOME/.oh-my-zsh"
+source $ZSH/oh-my-zsh.sh
+
+# THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
