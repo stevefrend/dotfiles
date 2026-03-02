@@ -1,0 +1,10 @@
+---
+# AeroSpace is installed via Homebrew cask in the packages role.
+# It requires Accessibility permission granted manually on first launch:
+#   System Settings → Privacy & Security → Accessibility → AeroSpace ✓
+
+- name: Remind about AeroSpace accessibility permission
+  ansible.builtin.debug:
+    msg: >
+      AeroSpace has been installed. On first launch, grant Accessibility permission:
+      System Settings → Privacy & Security → Accessibility → enable AeroSpace.

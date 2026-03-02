@@ -1,0 +1,16 @@
+---
+- name: Clone TPM (Tmux Plugin Manager)
+  ansible.builtin.git:
+    repo: "https://github.com/tmux-plugins/tpm"
+    dest: "{{ home_dir }}/.tmux/plugins/tpm"
+    version: master
+    update: false
+
+- name: Install tmux plugins via TPM
+  ansible.builtin.command:
+    cmd: "{{ home_dir }}/.tmux/plugins/tpm/bin/install_plugins"
+  register: tpm_result
+  changed_when: "'Installing' in tpm_result.stdout"
+  environment:
+    HOME: "{{ home_dir }}"
+    PATH: "{{ brew_prefix }}/bin:{{ ansible_env.PATH }}"

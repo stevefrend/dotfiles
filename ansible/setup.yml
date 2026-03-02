@@ -1,0 +1,30 @@
+---
+- name: Dotfiles setup
+  hosts: localhost
+  connection: local
+
+  vars_files:
+    - group_vars/all.yml
+
+  roles:
+    - role: homebrew
+      tags: [homebrew]
+
+    - role: packages
+      tags: [packages]
+
+    - role: dotfiles
+      tags: [dotfiles, stow]
+
+    - role: shell
+      tags: [shell]
+
+    - role: tmux
+      tags: [tmux]
+
+    - role: version_managers
+      tags: [version_managers]
+
+    - role: macos
+      tags: [macos]
+      when: ansible_system == "Darwin"

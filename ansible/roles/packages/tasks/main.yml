@@ -1,0 +1,99 @@
+---
+# ── Linux: system prerequisites ────────────────────────────────────────────────
+- name: Install system packages via apt (Linux)
+  ansible.builtin.apt:
+    name: "{{ linux_system_packages }}"
+    state: present
+    update_cache: true
+  become: true
+  when: ansible_system != "Darwin" and ansible_pkg_mgr == "apt"
+
+- name: Install system packages via dnf (Linux)
+  ansible.builtin.dnf:
+    name: "{{ linux_system_packages }}"
+    state: present
+  become: true
+  when: ansible_system != "Darwin" and ansible_pkg_mgr == "dnf"
+
+- name: Install system packages via pacman (Linux)
+  community.general.pacman:
+    name: "{{ linux_system_packages }}"
+    state: present
+  become: true
+  when: ansible_system != "Darwin" and ansible_pkg_mgr == "pacman"
+
+# ── Homebrew taps ───────────────────────────────────────────────────────────────
+- name: Add lazygit tap
+  community.general.homebrew_tap:
+    name: jesseduffield/lazygit
+    state: present
+  environment:
+    PATH: "{{ brew_prefix }}/bin:{{ ansible_env.PATH }}"
+
+- name: Add oh-my-posh tap
+  community.general.homebrew_tap:
+    name: jandedobbeleer/oh-my-posh
+    state: present
+  environment:
+    PATH: "{{ brew_prefix }}/bin:{{ ansible_env.PATH }}"
+
+# ── Homebrew formulae (both macOS and Linux) ────────────────────────────────────
+- name: Install Homebrew formulae
+  community.general.homebrew:
+    name: "{{ brew_formulae }}"
+    state: present
+  environment:
+    PATH: "{{ brew_prefix }}/bin:{{ ansible_env.PATH }}"
+
+- name: Install zsh via Homebrew (macOS)
+  community.general.homebrew:
+    name: "{{ brew_formulae_macos_extra }}"
+    state: present
+  when: ansible_system == "Darwin"
+  environment:
+    PATH: "{{ brew_prefix }}/bin:{{ ansible_env.PATH }}"
+
+- name: Install lazygit
+  community.general.homebrew:
+    name: jesseduffield/lazygit/lazygit
+    state: present
+  environment:
+    PATH: "{{ brew_prefix }}/bin:{{ ansible_env.PATH }}"
+
+# ── macOS: casks ────────────────────────────────────────────────────────────────
+- name: Install Homebrew casks (macOS)
+  community.general.homebrew_cask:
+    name: "{{ brew_casks }}"
+    state: present
+  when: ansible_system == "Darwin"
+  environment:
+    PATH: "{{ brew_prefix }}/bin:{{ ansible_env.PATH }}"
+
+# ── Linux: Nerd Fonts ───────────────────────────────────────────────────────────
+- name: Create fonts directory (Linux)
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.local/share/fonts"
+    state: directory
+    mode: "0755"
+  when: ansible_system != "Darwin"
+
+- name: Download JetBrains Mono Nerd Font (Linux)
+  ansible.builtin.get_url:
+    url: "{{ nerd_font_download_url }}"
+    dest: "/tmp/{{ nerd_font_name }}.zip"
+    mode: "0644"
+  when: ansible_system != "Darwin"
+
+- name: Extract JetBrains Mono Nerd Font (Linux)
+  ansible.builtin.unarchive:
+    src: "/tmp/{{ nerd_font_name }}.zip"
+    dest: "{{ home_dir }}/.local/share/fonts/"
+    remote_src: true
+    creates: "{{ home_dir }}/.local/share/fonts/JetBrainsMonoNerdFont-Regular.ttf"
+  when: ansible_system != "Darwin"
+
+- name: Refresh font cache (Linux)
+  ansible.builtin.command:
+    cmd: fc-cache -fv
+  changed_when: false
+  when: ansible_system != "Darwin"

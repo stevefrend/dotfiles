@@ -1,3 +1,6 @@
 wallpapers
 .git
 .gitignore
+ansible
+bootstrap.sh
+README.md

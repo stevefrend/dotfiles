@@ -1,0 +1,51 @@
+---
+home_dir: "{{ ansible_env.HOME }}"
+dotfiles_dir: "{{ ansible_env.HOME }}/dotfiles"
+
+# Homebrew prefix varies by OS and architecture
+brew_prefix: >-
+  {{
+    '/opt/homebrew' if (ansible_system == 'Darwin' and ansible_architecture == 'arm64')
+    else '/usr/local' if ansible_system == 'Darwin'
+    else '/home/linuxbrew/.linuxbrew'
+  }}
+brew_bin: "{{ brew_prefix }}/bin/brew"
+
+# System packages installed via apt/dnf before Homebrew (Linux only)
+linux_system_packages:
+  - curl
+  - git
+  - build-essential
+  - zsh
+  - file
+  - procps
+  - unzip
+
+# Homebrew formulae — installed on both macOS and Linux
+brew_formulae:
+  - neovim
+  - tmux
+  - ripgrep
+  - eza
+  - fzf
+  - zoxide
+  - oh-my-posh
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+  - stow
+
+# macOS-only: add zsh via brew (Linux uses system zsh)
+brew_formulae_macos_extra:
+  - zsh
+
+# Homebrew casks — macOS only
+brew_casks:
+  - alacritty
+  - wezterm
+  - aerospace
+  - font-jetbrains-mono-nerd-font
+  - font-meslo-lg-nerd-font
+
+# Nerd Font download for Linux
+nerd_font_name: JetBrainsMono
+nerd_font_download_url: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"

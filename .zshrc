@@ -22,7 +22,7 @@ plugins=(git)
 ZSH_THEME="robbyrussell"
 
 source <(fzf --zsh)
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -69,7 +69,7 @@ bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
 # Needs to be at the end of the file
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 # pyenv setup (python)
 export PYENV_ROOT="$HOME/.pyenv"

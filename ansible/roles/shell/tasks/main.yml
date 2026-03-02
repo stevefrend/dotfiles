@@ -1,0 +1,23 @@
+---
+- name: Get zsh path
+  ansible.builtin.command:
+    cmd: which zsh
+  register: zsh_path
+  changed_when: false
+  environment:
+    PATH: "{{ brew_prefix }}/bin:{{ ansible_env.PATH }}"
+
+- name: Add brew zsh to /etc/shells (if not already listed)
+  ansible.builtin.lineinfile:
+    path: /etc/shells
+    line: "{{ zsh_path.stdout }}"
+    state: present
+  become: true
+  when: ansible_env.SHELL != zsh_path.stdout
+
+- name: Set zsh as default shell
+  ansible.builtin.user:
+    name: "{{ ansible_env.USER }}"
+    shell: "{{ zsh_path.stdout }}"
+  become: true
+  when: ansible_env.SHELL != zsh_path.stdout

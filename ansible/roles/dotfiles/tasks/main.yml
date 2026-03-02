@@ -1,0 +1,26 @@
+---
+- name: Check if dotfiles directory exists
+  ansible.builtin.stat:
+    path: "{{ dotfiles_dir }}"
+  register: dotfiles_stat
+
+- name: Clone dotfiles repository
+  ansible.builtin.git:
+    repo: "https://github.com/stevefrend/dotfiles.git"
+    dest: "{{ dotfiles_dir }}"
+    version: master
+  when: not dotfiles_stat.stat.exists
+
+- name: Stow dotfiles into home directory
+  ansible.builtin.command:
+    cmd: >
+      stow --verbose=1
+      --target="{{ home_dir }}"
+      --dir="{{ dotfiles_dir | dirname }}"
+      "{{ dotfiles_dir | basename }}"
+    chdir: "{{ dotfiles_dir }}"
+  register: stow_result
+  # stow outputs "LINK: ..." to stderr only for new links; existing links are silent
+  changed_when: "'LINK:' in stow_result.stderr"
+  environment:
+    PATH: "{{ brew_prefix }}/bin:{{ ansible_env.PATH }}"

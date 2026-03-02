@@ -1,0 +1,38 @@
+---
+# ── pyenv ───────────────────────────────────────────────────────────────────────
+- name: Install pyenv build dependencies (Linux)
+  ansible.builtin.apt:
+    name:
+      - make
+      - libssl-dev
+      - zlib1g-dev
+      - libbz2-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libncursesw5-dev
+      - xz-utils
+      - tk-dev
+      - libxml2-dev
+      - libxmlsec1-dev
+      - libffi-dev
+      - liblzma-dev
+    state: present
+  become: true
+  when: ansible_system != "Darwin" and ansible_pkg_mgr == "apt"
+
+- name: Install pyenv
+  ansible.builtin.shell:
+    cmd: curl https://pyenv.run | bash
+    creates: "{{ home_dir }}/.pyenv/bin/pyenv"
+
+# ── nvm ─────────────────────────────────────────────────────────────────────────
+- name: Install nvm
+  ansible.builtin.shell:
+    cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+    creates: "{{ home_dir }}/.nvm/nvm.sh"
+
+# ── sdkman ──────────────────────────────────────────────────────────────────────
+- name: Install SDKMAN
+  ansible.builtin.shell:
+    cmd: curl -s "https://get.sdkman.io" | bash
+    creates: "{{ home_dir }}/.sdkman/bin/sdkman-init.sh"

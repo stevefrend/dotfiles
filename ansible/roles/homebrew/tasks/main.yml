@@ -1,0 +1,26 @@
+---
+- name: Check if Homebrew is installed
+  ansible.builtin.stat:
+    path: "{{ brew_bin }}"
+  register: brew_stat
+
+- name: Install Homebrew
+  ansible.builtin.shell:
+    cmd: NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  when: not brew_stat.stat.exists
+  changed_when: true
+
+- name: Add Homebrew to PATH in .zprofile (Linux)
+  ansible.builtin.lineinfile:
+    path: "{{ home_dir }}/.zprofile"
+    line: 'eval "$({{ brew_bin }} shellenv)"'
+    create: true
+    mode: "0644"
+  when: ansible_system != "Darwin"
+
+- name: Update Homebrew
+  community.general.homebrew:
+    update_homebrew: true
+  changed_when: false
+  environment:
+    PATH: "{{ brew_prefix }}/bin:{{ ansible_env.PATH }}"

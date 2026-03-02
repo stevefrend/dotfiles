@@ -1,43 +1,102 @@
 # Dotfiles
 
-Clone this repo into your home folder, then run `stow .` from the .dotfiles folder after installing stow.
+Personal dotfiles for macOS and Linux, managed with [GNU Stow](https://www.gnu.org/software/stow/) for symlinks and [Ansible](https://www.ansible.com/) for provisioning.
 
-## Stow
+## Quick Start (fresh machine)
 
-- brew install stow
+```bash
+git clone https://github.com/stevefrend/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./bootstrap.sh
+```
 
-## zsh
+`bootstrap.sh` will:
+1. Install system prerequisites (Linux: via apt)
+2. Install [Homebrew](https://brew.sh/)
+3. Install Ansible via Homebrew
+4. Run the Ansible playbook
 
-- brew install zsh
-- brew install zsh-autosuggestions
-- brew install jandedobbeleer/oh-my-posh/oh-my-posh
-- after running everything for zsh, `source %`
+Restart your terminal when done.
 
-## Alacritty (Terminal)
+---
 
-- brew install alacritty
+## What Gets Installed
 
-## Nerd Fonts
+| Role | Tools |
+|------|-------|
+| `packages` | neovim, tmux, lazygit, ripgrep, eza, fzf, zoxide, oh-my-posh, zsh + plugins, stow |
+| `packages` (macOS) | alacritty, wezterm, aerospace, Nerd Fonts |
+| `packages` (Linux) | system prereqs via apt + JetBrains Mono Nerd Font |
+| `dotfiles` | symlinks all configs into `~` via stow |
+| `shell` | sets zsh as default shell |
+| `tmux` | installs TPM and tmux plugins |
+| `version_managers` | pyenv, nvm, sdkman |
+| `macos` | AeroSpace reminder (requires manual Accessibility grant) |
 
-- brew install font-meslo-lg-nerd-font
+---
 
-## Aerospace (tiling manager for osx)
+## Running Parts of the Playbook
 
-- brew install aerospace
-- open aerospace app manually
+After bootstrap you can re-run individual roles using tags:
 
-## TMUX
+```bash
+# Full run
+ansible-playbook -i ansible/inventory/localhost.yml ansible/setup.yml
 
-- brew install tmux
-- install plugins with prefix (default is C-b) + shift + i
+# Symlink dotfiles only
+ansible-playbook -i ansible/inventory/localhost.yml ansible/setup.yml --tags dotfiles
 
-## LazyGit
+# Install packages only
+ansible-playbook -i ansible/inventory/localhost.yml ansible/setup.yml --tags packages
 
-https://github.com/jesseduffield/lazygit
+# Shell + tmux only
+ansible-playbook -i ansible/inventory/localhost.yml ansible/setup.yml --tags "shell,tmux"
 
-- brew install jesseduffield/lazygit/lazygit
+# Dry run (no changes made)
+ansible-playbook -i ansible/inventory/localhost.yml ansible/setup.yml --check --diff
+```
 
-## Neovim
+Available tags: `homebrew`, `packages`, `dotfiles`, `shell`, `tmux`, `version_managers`, `macos`
 
-- brew install nvim
-- brew install ripgrep
+---
+
+## Structure
+
+```
+dotfiles/
+├── ansible/
+│   ├── setup.yml               # Main playbook
+│   ├── inventory/localhost.yml
+│   ├── group_vars/all.yml      # Package lists and variables
+│   ├── requirements.yml        # Ansible collections
+│   └── roles/
+│       ├── homebrew/           # Install Homebrew
+│       ├── packages/           # Install all packages
+│       ├── dotfiles/           # Stow symlinks
+│       ├── shell/              # Set zsh as default
+│       ├── tmux/               # TPM + plugins
+│       ├── version_managers/   # pyenv, nvm, sdkman
+│       └── macos/              # macOS-only config
+├── .config/
+│   ├── aerospace/
+│   ├── alacritty/
+│   ├── lazygit/
+│   ├── nvim/                   # LazyVim
+│   └── ohmyposh/
+├── .tmux.conf
+├── .wezterm.lua
+├── .zprofile
+├── .zshrc
+├── .scripts/
+└── bootstrap.sh
+```
+
+---
+
+## Manual Steps
+
+A few things can't be automated:
+
+- **AeroSpace** (macOS): Grant Accessibility permission on first launch via *System Settings → Privacy & Security → Accessibility*
+- **Neovim plugins**: Launch `nvim` once — LazyVim will auto-install all plugins on first open
+- **Work config**: Set `export LOCATION=work` in `~/.zshenv` to load `~/.zshwork`
