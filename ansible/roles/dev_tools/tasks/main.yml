@@ -1,0 +1,7 @@
+---
+- name: Install Claude Code CLI
+  community.general.npm:
+    name: "@anthropic-ai/claude-code"
+    global: true
+    executable: "{{ brew_prefix }}/bin/npm"
+    state: present

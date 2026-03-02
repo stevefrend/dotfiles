@@ -31,6 +31,7 @@ Restart your terminal when done.
 | `shell` | sets zsh as default shell |
 | `tmux` | installs TPM and tmux plugins |
 | `version_managers` | pyenv, nvm, sdkman |
+| `dev_tools` | Claude Code CLI (`@anthropic-ai/claude-code`) |
 | `macos` | AeroSpace reminder (requires manual Accessibility grant) |
 
 ---
@@ -56,7 +57,7 @@ ansible-playbook -i ansible/inventory/localhost.yml ansible/setup.yml --tags "sh
 ansible-playbook -i ansible/inventory/localhost.yml ansible/setup.yml --check --diff
 ```
 
-Available tags: `homebrew`, `packages`, `dotfiles`, `shell`, `tmux`, `version_managers`, `macos`
+Available tags: `homebrew`, `packages`, `dotfiles`, `shell`, `tmux`, `version_managers`, `dev_tools`, `macos`
 
 ---
 
@@ -76,6 +77,7 @@ dotfiles/
 │       ├── shell/              # Set zsh as default
 │       ├── tmux/               # TPM + plugins
 │       ├── version_managers/   # pyenv, nvm, sdkman
+│       ├── dev_tools/          # Claude Code CLI
 │       └── macos/              # macOS-only config
 ├── .config/
 │   ├── aerospace/

@@ -25,6 +25,9 @@
     - role: version_managers
       tags: [version_managers]
 
+    - role: dev_tools
+      tags: [dev_tools]
+
     - role: macos
       tags: [macos]
       when: ansible_system == "Darwin"

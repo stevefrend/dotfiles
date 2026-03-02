@@ -33,6 +33,7 @@ brew_formulae:
   - zsh-autosuggestions
   - zsh-syntax-highlighting
   - stow
+  - node
 
 # macOS-only: add zsh via brew (Linux uses system zsh)
 brew_formulae_macos_extra:
