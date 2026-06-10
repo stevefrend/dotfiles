@@ -1,4 +1,6 @@
 ---
+# zsh + oh-my-zsh + autosuggestions + syntax-highlighting.
+# The .zshrc itself is stow-managed (and portable) — nothing here writes it.
 - name: Install zsh (macOS)
   community.general.homebrew:
     name: zsh
@@ -23,6 +25,7 @@
     repo: https://github.com/ohmyzsh/ohmyzsh.git
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh"
     depth: 1
+    version: master
 
 - name: Install zsh-autosuggestions (macOS)
   community.general.homebrew:
@@ -35,6 +38,7 @@
     repo: https://github.com/zsh-users/zsh-autosuggestions.git
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
     depth: 1
+    version: master
   when: ansible_os_family == "Debian"
 
 - name: Install zsh-syntax-highlighting (macOS)
@@ -48,16 +52,5 @@
     repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
     depth: 1
+    version: master
   when: ansible_os_family == "Debian"
-
-- name: Deploy .zshenv
-  template:
-    src: zshenv.j2
-    dest: "{{ ansible_env.HOME }}/.zshenv"
-    mode: "0644"
-
-- name: Deploy .zshrc template
-  template:
-    src: zshrc.j2
-    dest: "{{ ansible_env.HOME }}/.zshrc"
-    mode: "0644"

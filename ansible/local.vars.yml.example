@@ -1,0 +1,10 @@
+# Per-machine overrides that should NOT be committed.
+# Copy to local.vars.yml (gitignored) and edit. Loaded automatically by
+# modules/git.yml if present.
+#
+# Example: set a work git identity on a fresh machine without putting an
+# internal email in the repo. (Note: the git module only sets identity if one
+# isn't already configured globally, so existing identities are never clobbered.)
+#
+# git_user_name: your-name
+# git_user_email: you@example.com

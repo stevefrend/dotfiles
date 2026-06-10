@@ -1,32 +1,19 @@
-FROM --platform=linux/arm64 debian:bookworm
+# Lightweight Debian box for testing the playbook locally.
+# No platform pin -> builds for the host arch (arm64 under colima, no QEMU).
+# No sshd, no SYS_ADMIN, no exposed ports: ansible runs *inside* the container
+# over a local connection, so this stays a single cheap container that won't
+# disturb colima or your other running containers.
+FROM debian:bookworm
 
-RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
-  ansible \
-  curl \
-  git \
-  rsync \
-  sudo \
-  openssh-server \
-  sshpass \
-  gnupg \
-  python3-apt \
-  locales \
-  > /dev/null 2>&1 && \
-  echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
+RUN apt-get update -qq \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+       ansible git stow sudo curl ca-certificates locales python3-apt \
+  && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen \
+  && useradd -m -s /bin/bash dev \
+  && echo 'dev ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
-RUN useradd -m testuser \
-  && echo 'testuser ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
-  && mkdir -p /home/testuser/.ssh \
-  && ssh-keygen -t ed25519 -f /home/testuser/.ssh/id_ed25519 -N '' \
-  && cat /home/testuser/.ssh/id_ed25519.pub >> /home/testuser/.ssh/authorized_keys \
-  && chown -R testuser:testuser /home/testuser/.ssh \
-  && chmod 600 /home/testuser/.ssh/authorized_keys
+USER dev
+WORKDIR /home/dev
+ENV LANG=en_US.UTF-8
 
-RUN mkdir /var/run/sshd \
-  && echo 'testuser:testuser' | chpasswd \
-  && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
-  && sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords yes/' /etc/ssh/sshd_config
-
-EXPOSE 22
-
-CMD ["/usr/sbin/sshd", "-D", "-e"]
+CMD ["sleep", "infinity"]

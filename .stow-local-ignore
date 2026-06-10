@@ -3,3 +3,5 @@ wallpapers
 .gitignore
 ansible
 ansible-pull.sh
+README.md
+.zshrc.original

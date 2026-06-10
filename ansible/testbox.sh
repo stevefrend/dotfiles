@@ -1,76 +1,80 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Lightweight Debian testbox for the dotfiles playbook.
+#
+# Runs ansible *inside* a single throwaway container over a local connection —
+# no sshd, no privileged caps, native arch. It's just one more small container,
+# so it won't take colima (or your other containers) down.
+
 DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO="$(dirname "$DIR")"
 NAME="dotfiles-testbox"
 IMAGE="dotfiles-testbox"
-CMD="${1:-}"
 
-case "$CMD" in
+exec_dev() { docker exec -u dev "$NAME" "$@"; }
+
+case "${1:-}" in
   up)
-    echo "==> Building $IMAGE..."
-    docker build --platform linux/arm64 -t "$IMAGE" -f "$DIR/Dockerfile.testbox" "$DIR"
+    echo "==> Building $IMAGE (native arch)..."
+    docker build -t "$IMAGE" -f "$DIR/Dockerfile.testbox" "$DIR"
     echo "==> Starting $NAME..."
-    docker rm -f "$NAME" 2>/dev/null || true
+    docker rm -f "$NAME" >/dev/null 2>&1 || true
     docker run -d \
-      --platform linux/arm64 \
       --name "$NAME" \
       --hostname testbox \
-      -p 2222:22 \
-      -v "$DIR/..:/dotfiles:ro" \
+      -v "$REPO:/dotfiles:ro" \
       "$IMAGE"
-    echo "==> Waiting for SSH..."
-    for i in $(seq 1 15); do
-      if docker exec "$NAME" sshd -t 2>/dev/null; then
-        break
-      fi
-      sleep 1
-    done
-    docker cp "$NAME:/home/testuser/.ssh/id_ed25519" /tmp/testbox_key 2>/dev/null
-    chmod 600 /tmp/testbox_key 2>/dev/null
     echo ""
-    echo "  SSH:        ssh -i /tmp/testbox_key testuser@localhost -p 2222"
-    echo "  Ansible:    $0 ansible --tags minimal"
-    echo "  Shell:      $0 shell"
-    echo "  Stop:       $0 down"
+    echo "  Dry run:   $0 check"
+    echo "  Apply:     $0 ansible --tags foundations"
+    echo "  Shell:     $0 shell"
+    echo "  Stop:      $0 down"
     ;;
 
   down)
-    echo "==> Stopping $NAME..."
-    docker stop "$NAME" 2>/dev/null || true
-    docker rm "$NAME" 2>/dev/null || true
+    echo "==> Removing $NAME..."
+    docker rm -f "$NAME" >/dev/null 2>&1 || true
     ;;
 
   shell)
-    docker exec -it "$NAME" /bin/bash
-    ;;
-
-  ssh)
-    shift
-    ssh testuser@localhost -p 2222 "$@"
+    docker exec -it -u dev "$NAME" /bin/bash
     ;;
 
   ansible)
     shift
-    ansible-playbook "$DIR/playbook.yml" \
-      -i "$DIR/inventory.testbox.yml" \
-      "$@"
+    # Default to the foundations base if no tags/args were given.
+    if [ "$#" -eq 0 ]; then set -- --tags foundations; fi
+    exec_dev env DOTFILES_DIR=/dotfiles ansible-playbook \
+      /dotfiles/ansible/playbook.yml \
+      -i /dotfiles/ansible/inventory.yml -c local "$@"
+    ;;
+
+  check)
+    shift
+    if [ "$#" -eq 0 ]; then set -- --tags foundations; fi
+    exec_dev env DOTFILES_DIR=/dotfiles ansible-playbook \
+      /dotfiles/ansible/playbook.yml \
+      -i /dotfiles/ansible/inventory.yml -c local --check --diff "$@"
     ;;
 
   *)
-    echo "Usage: $0 {up|down|shell|ssh|ansible}"
-    echo ""
-    echo "  up        Build and start the testbox container"
-    echo "  down      Stop and remove the container"
-    echo "  shell     Open a shell inside the container"
-    echo "  ssh       SSH into the container"
-    echo "  ansible   Run ansible-playbook against the testbox"
-    echo ""
-    echo "Examples:"
-    echo "  $0 up"
-    echo "  $0 shell"
-    echo "  $0 ansible --tags minimal --diff"
-    echo "  $0 ansible --tags dev --check"
-    echo "  $0 ansible --tags minimal,docker"
+    cat <<EOF
+Usage: $0 {up|check|ansible|shell|down}
+
+  up        Build and start the testbox container
+  check     Dry-run the playbook (--check --diff) inside the container
+  ansible   Apply the playbook inside the container (default: --tags foundations)
+  shell     Open a shell inside the container to poke around
+  down      Stop and remove the container
+
+Examples:
+  $0 up
+  $0 check
+  $0 ansible --tags foundations
+  $0 ansible --tags neovim,git
+  $0 shell
+  $0 down
+EOF
     ;;
 esac

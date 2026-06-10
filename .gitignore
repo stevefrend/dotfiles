@@ -1,2 +1,3 @@
 .DS_Store
 ansible/.ansible/
+ansible/local.vars.yml

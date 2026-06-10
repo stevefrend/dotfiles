@@ -1,84 +1,117 @@
 # Dotfiles
 
-Managed with GNU Stow + Ansible.
+Managed with **GNU Stow** (config symlinks) + **Ansible** (package installs).
 
-## Quick Start
+The split is deliberate:
 
-### Fresh machine (macOS or Linux)
+- **Stow** owns every config file. `~/.zshrc`, `~/.tmux.conf`, `~/.config/nvim`, … are symlinks
+  into this repo. Ansible never writes them.
+- **Ansible** only installs packages and runs `stow`. It's organised into small, **tag-based
+  modules** you invoke individually — there are no monolithic "profiles" or roles.
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/stevefrend/dotfiles/main/ansible-pull.sh | bash
-```
+Works on **macOS** and **Debian/Linux**.
 
-Or clone and run manually:
+## Quick start
 
 ```bash
 git clone https://github.com/stevefrend/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-ansible-playbook ansible/playbook.yml
+
+# Install the base environment (zsh, tmux, neovim, CLI tools, git config) + symlink dotfiles
+ansible-playbook ansible/playbook.yml --tags foundations
 ```
 
-### Profiles
-
-| Profile | Includes |
-|---------|----------|
-| `dev` (default) | Core shell + terminal + neovim + CLI tools + dev languages |
-| `minimal` | Core shell + terminal + neovim + CLI tools (no node/python/go) |
+Bootstrapping a fresh box (installs Ansible first, then pulls and runs):
 
 ```bash
-# Headless server — minimal profile
-./ansible-pull.sh https://github.com/stevefrend/dotfiles.git minimal
-
-# Add Docker to a minimal machine ad-hoc
-./ansible-pull.sh https://github.com/stevefrend/dotfiles.git minimal,docker
-
-# Work machine with location flag
-./ansible-pull.sh https://github.com/stevefrend/dotfiles.git dev work
+./ansible-pull.sh https://github.com/stevefrend/dotfiles.git foundations
 ```
 
-### Per-machine config
+## Modules
 
-Set `$LOCATION` in `~/.zshenv` (rendered from template):
-
-- `home` — personal machines (default)
-- `work` — sources `~/.zshwork` for work-specific config
-
-Override per machine with `--extra-vars "location=work"` or via `host_vars/`.
-
-## What It Sets Up
-
-- **zsh** + Oh My Zsh + autosuggestions + syntax highlighting
-- **tmux** with TPM, resurrect, continuum, vim navigation, catppuccin theme
-- **wezterm** terminal (macOS)
-- **neovim** with full LazyVim config
-- **CLI tools**: eza, fzf, zoxide, ripgrep, gh, lazygit, tldr
-- **Dev languages**: nvm/node, pyenv/python, go, sdkman/java (dev profile only)
-- **Docker** (dev profile + `--tags docker`)
-- **Aerospace** tiling WM (macOS only)
-
-## Testing
+Run the whole base, or target one piece by tag:
 
 ```bash
-# Docker smoke test (Debian, minimal profile)
-./ansible/test-with-docker.sh
-
-# With different distro or tags
-./ansible/test-with-docker.sh ubuntu:24.04 minimal,docker
+ansible-playbook ansible/playbook.yml --tags foundations   # everything below
+ansible-playbook ansible/playbook.yml --tags neovim        # just neovim
+ansible-playbook ansible/playbook.yml --tags tmux,git      # compose several
 ```
+
+| Tag           | Installs |
+|---------------|----------|
+| `foundations` | the whole base (all rows below) |
+| `stow`        | GNU Stow + symlinks this repo into `$HOME` |
+| `shell` / `zsh` | zsh, Oh My Zsh, autosuggestions, syntax-highlighting |
+| `terminal` / `tmux` | tmux + TPM/resurrect/continuum/navigator/catppuccin; wezterm + Nerd Fonts (macOS) |
+| `editor` / `neovim` | neovim |
+| `tools`       | eza, fzf, zoxide, ripgrep, tldr, gh, lazygit |
+| `git`         | git aliases + pull/push settings (idempotent; see below) |
+
+### Git config
+
+The `git` module sets safe aliases and pull/push behaviour every run. It sets your
+`user.name` / `user.email` **only if they aren't already configured globally**, so it never
+clobbers an existing identity. Defaults are the personal identity; a work identity is **not**
+committed to this repo — set it per-machine via `--extra-vars` or an untracked
+`ansible/local.vars.yml` (copy `ansible/local.vars.yml.example`).
+
+## Testing on Debian (colima-safe)
+
+A lightweight throwaway container runs the playbook over a **local connection** — no sshd, no
+privileged caps, native arch. It's just one small container and won't disturb colima or your
+other running containers.
+
+```bash
+./ansible/testbox.sh up                        # build + start
+./ansible/testbox.sh check                      # dry-run (--check --diff)
+./ansible/testbox.sh ansible --tags foundations # apply
+./ansible/testbox.sh shell                      # poke around (run nvim, tmux, ...)
+./ansible/testbox.sh down                        # remove
+```
+
+## Adding a module (example: Go)
+
+The pattern is intentionally small. Create `ansible/modules/go.yml`:
+
+```yaml
+---
+- name: Install Go (macOS)
+  community.general.homebrew: { name: go, state: present }
+  when: ansible_system == "Darwin"
+
+- name: Install Go (Linux)
+  when: ansible_os_family == "Debian"
+  block:
+    - get_url: { url: https://go.dev/dl/go1.22.5.linux-amd64.tar.gz, dest: /tmp/go.tar.gz, mode: "0644" }
+    - unarchive: { src: /tmp/go.tar.gz, dest: /usr/local, remote_src: true, creates: /usr/local/go }
+      become: true
+```
+
+Then add one line to `ansible/playbook.yml` under `tasks:` (note: **not** tagged `foundations`,
+so it stays opt-in):
+
+```yaml
+    - name: go
+      import_tasks: modules/go.yml
+      tags: [go]
+```
+
+Now `ansible-playbook ansible/playbook.yml --tags go` sets you up with Go.
 
 ## Structure
 
 ```
 dotfiles/
 ├── ansible/
-│   ├── playbook.yml       # Entry point
-│   ├── roles/             # core, terminal, editors, tools, dev
-│   ├── templates/         # Jinja2 templates (.zshrc, .zshenv, .gitconfig)
-│   └── host_vars/         # Per-machine overrides
-├── .config/               # Sync'd to ~/.config/ via Ansible
-├── .tmux.conf             # Symlinked via stow
-├── .wezterm.lua           # Symlinked via stow
-├── .zshrc                 # Stow-managed (template overrides on first pull)
-├── ansible-pull.sh        # Bootstrap script
+│   ├── playbook.yml              # entry point: tagged module imports
+│   ├── ansible.cfg
+│   ├── inventory.yml             # localhost / local connection
+│   ├── modules/                  # stow, shell, terminal, editor, tools, git
+│   ├── Dockerfile.testbox        # slim Debian test image
+│   ├── testbox.sh                # up/check/ansible/shell/down
+│   └── local.vars.yml.example    # untracked per-machine overrides
+├── .config/                      # nvim, lazygit, aerospace, ... (stow-managed)
+├── .tmux.conf  .wezterm.lua  .zshrc  .zprofile   # stow-managed
+├── ansible-pull.sh               # bootstrap a fresh machine
 └── README.md
 ```

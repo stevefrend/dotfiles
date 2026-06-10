@@ -1,0 +1,55 @@
+---
+# tmux + plugins, and (macOS only) the GUI terminal and fonts.
+# On a headless Linux rig, fonts render on the SSH client, so we skip them.
+- name: Install tmux (macOS)
+  community.general.homebrew:
+    name: tmux
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install tmux (Linux)
+  apt:
+    name: tmux
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+# tmux plugins are not vendored in the repo. Install TPM, then let it install
+# whatever .tmux.conf declares (`set -g @plugin ...`) — so the plugin list and
+# pinned versions live in one place: .tmux.conf.
+- name: Ensure .tmux/plugins directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.tmux/plugins"
+    state: directory
+    mode: "0755"
+
+- name: Install TPM (tmux plugin manager)
+  git:
+    repo: https://github.com/tmux-plugins/tpm.git
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+    depth: 1
+    version: master
+
+- name: Install tmux plugins declared in .tmux.conf
+  command: "{{ ansible_env.HOME }}/.tmux/plugins/tpm/bin/install_plugins"
+  args:
+    # catppuccin clones into a dir named "tmux"; use it as the done-marker.
+    creates: "{{ ansible_env.HOME }}/.tmux/plugins/tmux"
+
+- name: Install wezterm (macOS)
+  community.general.homebrew:
+    name: wezterm
+    state: present
+    casks: true
+  when: ansible_system == "Darwin"
+
+- name: Install Nerd Fonts (macOS)
+  community.general.homebrew:
+    name: "{{ item }}"
+    state: present
+    casks: true
+  loop:
+    - font-jetbrains-mono-nerd-font
+    - font-meslo-lg-nerd-font
+    - font-hack-nerd-font
+  when: ansible_system == "Darwin"

@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="${1:-https://github.com/stevefrend/dotfiles.git}"
-TAGS="${2:-dev}"
-LOCATION="${3:-home}"
+# Bootstrap a machine straight from the repo with ansible-pull.
+#   ./ansible-pull.sh                       # foundations from the default repo
+#   ./ansible-pull.sh <repo-url> foundations
+#   ./ansible-pull.sh <repo-url> neovim,git
 
-if ! command -v ansible-pull &> /dev/null; then
+REPO_URL="${1:-https://github.com/stevefrend/dotfiles.git}"
+TAGS="${2:-foundations}"
+
+if ! command -v ansible-pull &>/dev/null; then
   echo "Installing Ansible..."
   if [[ "$(uname)" == "Darwin" ]]; then
     brew install ansible
-  elif command -v apt &> /dev/null; then
+  elif command -v apt &>/dev/null; then
     sudo apt update && sudo apt install -y ansible
   else
     echo "Unsupported OS. Install Ansible manually and re-run."
@@ -17,10 +21,12 @@ if ! command -v ansible-pull &> /dev/null; then
   fi
 fi
 
-echo "Running ansible-pull with tags: $TAGS (location: $LOCATION)"
+PULL_DIR="$HOME/.ansible-pull/dotfiles"
+
+echo "Running ansible-pull with tags: $TAGS"
 ansible-pull \
   --url "$REPO_URL" \
-  --directory "$HOME/.ansible-pull/dotfiles" \
+  --directory "$PULL_DIR" \
   --only-if-changed \
-  --extra-vars "location=$LOCATION" \
+  --extra-vars "dotfiles_dir=$PULL_DIR" \
   --tags "$TAGS"

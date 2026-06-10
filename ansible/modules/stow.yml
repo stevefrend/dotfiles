@@ -1,0 +1,27 @@
+---
+# Install GNU Stow and symlink the repo's dotfiles into $HOME.
+# Stow is the single source of truth for config files.
+- name: Install stow (macOS)
+  community.general.homebrew:
+    name: stow
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install stow (Linux)
+  apt:
+    name: stow
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+# Target $HOME explicitly so this is correct no matter where the repo lives
+# (~/dotfiles, ~/.ansible-pull/dotfiles, /dotfiles in the testbox, ...).
+- name: Symlink dotfiles into $HOME with stow
+  command:
+    cmd: >-
+      stow
+      --target={{ ansible_env.HOME }}
+      --dir={{ dotfiles_dir | dirname }}
+      {{ dotfiles_dir | basename }}
+  register: stow_result
+  changed_when: "'LINK' in stow_result.stderr"

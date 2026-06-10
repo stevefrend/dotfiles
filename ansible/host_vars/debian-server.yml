@@ -1,5 +1,0 @@
----
-location: home
-dotfiles_profile: minimal
-ansible_os_family: Debian
-user: steve

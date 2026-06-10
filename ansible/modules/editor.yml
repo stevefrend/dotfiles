@@ -1,0 +1,40 @@
+---
+# neovim. The config under .config/nvim is stow-managed — nothing here syncs it.
+- name: Install neovim (macOS)
+  community.general.homebrew:
+    name: neovim
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install neovim (Linux)
+  when: ansible_os_family == "Debian"
+  block:
+    - name: Install neovim runtime dependencies
+      apt:
+        name: [curl, ripgrep, xsel]
+        state: present
+      become: true
+
+    - name: Set neovim arch fact
+      set_fact:
+        nvim_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else 'x86_64' }}"
+
+    - name: Check if neovim is installed
+      stat:
+        path: "/opt/nvim-linux-{{ nvim_arch }}/bin/nvim"
+      register: nvim_installed
+
+    - name: Download neovim release
+      unarchive:
+        src: "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-{{ nvim_arch }}.tar.gz"
+        dest: /opt
+        remote_src: true
+      become: true
+      when: not nvim_installed.stat.exists
+
+    - name: Symlink nvim onto PATH
+      file:
+        src: "/opt/nvim-linux-{{ nvim_arch }}/bin/nvim"
+        dest: /usr/local/bin/nvim
+        state: link
+      become: true
