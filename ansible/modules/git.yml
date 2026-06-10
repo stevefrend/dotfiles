@@ -17,10 +17,6 @@
     value: "{{ item.value }}"
     scope: global
   loop:
-    - { name: "alias.co", value: "checkout" }
-    - { name: "alias.c", value: "commit" }
-    - { name: "alias.s", value: "status" }
-    - { name: "alias.l", value: "log --oneline" }
     - { name: "pull.rebase", value: "false" }
     - { name: "push.autoSetupRemote", value: "true" }
     - { name: "push.default", value: "simple" }
@@ -40,6 +36,14 @@
     value: "{{ item.value }}"
     scope: global
   loop:
-    - { name: "user.name", value: "{{ git_user_name | default('steve') }}", existing: "{{ git_identity.results[0].stdout }}" }
-    - { name: "user.email", value: "{{ git_user_email | default('stevefrend1@gmail.com') }}", existing: "{{ git_identity.results[1].stdout }}" }
+    - {
+        name: "user.name",
+        value: "{{ git_user_name | default('steve') }}",
+        existing: "{{ git_identity.results[0].stdout }}",
+      }
+    - {
+        name: "user.email",
+        value: "{{ git_user_email | default('stevefrend1@gmail.com') }}",
+        existing: "{{ git_identity.results[1].stdout }}",
+      }
   when: item.existing | length == 0
