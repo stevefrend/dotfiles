@@ -1,43 +1,84 @@
 # Dotfiles
 
-Clone this repo into your home folder, then run `stow .` from the .dotfiles folder after installing stow.
+Managed with GNU Stow + Ansible.
 
-## Stow
+## Quick Start
 
-- brew install stow
+### Fresh machine (macOS or Linux)
 
-## zsh
+```bash
+curl -fsSL https://raw.githubusercontent.com/stevefrend/dotfiles/main/ansible-pull.sh | bash
+```
 
-- brew install zsh
-- brew install zsh-autosuggestions
-- brew install jandedobbeleer/oh-my-posh/oh-my-posh
-- after running everything for zsh, `source %`
+Or clone and run manually:
 
-## Alacritty (Terminal)
+```bash
+git clone https://github.com/stevefrend/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+ansible-playbook ansible/playbook.yml
+```
 
-- brew install alacritty
+### Profiles
 
-## Nerd Fonts
+| Profile | Includes |
+|---------|----------|
+| `dev` (default) | Core shell + terminal + neovim + CLI tools + dev languages |
+| `minimal` | Core shell + terminal + neovim + CLI tools (no node/python/go) |
 
-- brew install font-meslo-lg-nerd-font
+```bash
+# Headless server — minimal profile
+./ansible-pull.sh https://github.com/stevefrend/dotfiles.git minimal
 
-## Aerospace (tiling manager for osx)
+# Add Docker to a minimal machine ad-hoc
+./ansible-pull.sh https://github.com/stevefrend/dotfiles.git minimal,docker
 
-- brew install aerospace
-- open aerospace app manually
+# Work machine with location flag
+./ansible-pull.sh https://github.com/stevefrend/dotfiles.git dev work
+```
 
-## TMUX
+### Per-machine config
 
-- brew install tmux
-- install plugins with prefix (default is C-b) + shift + i
+Set `$LOCATION` in `~/.zshenv` (rendered from template):
 
-## LazyGit
+- `home` — personal machines (default)
+- `work` — sources `~/.zshwork` for work-specific config
 
-https://github.com/jesseduffield/lazygit
+Override per machine with `--extra-vars "location=work"` or via `host_vars/`.
 
-- brew install jesseduffield/lazygit/lazygit
+## What It Sets Up
 
-## Neovim
+- **zsh** + Oh My Zsh + autosuggestions + syntax highlighting
+- **tmux** with TPM, resurrect, continuum, vim navigation, catppuccin theme
+- **wezterm** terminal (macOS)
+- **neovim** with full LazyVim config
+- **CLI tools**: eza, fzf, zoxide, ripgrep, gh, lazygit, tldr
+- **Dev languages**: nvm/node, pyenv/python, go, sdkman/java (dev profile only)
+- **Docker** (dev profile + `--tags docker`)
+- **Aerospace** tiling WM (macOS only)
 
-- brew install nvim
-- brew install ripgrep
+## Testing
+
+```bash
+# Docker smoke test (Debian, minimal profile)
+./ansible/test-with-docker.sh
+
+# With different distro or tags
+./ansible/test-with-docker.sh ubuntu:24.04 minimal,docker
+```
+
+## Structure
+
+```
+dotfiles/
+├── ansible/
+│   ├── playbook.yml       # Entry point
+│   ├── roles/             # core, terminal, editors, tools, dev
+│   ├── templates/         # Jinja2 templates (.zshrc, .zshenv, .gitconfig)
+│   └── host_vars/         # Per-machine overrides
+├── .config/               # Sync'd to ~/.config/ via Ansible
+├── .tmux.conf             # Symlinked via stow
+├── .wezterm.lua           # Symlinked via stow
+├── .zshrc                 # Stow-managed (template overrides on first pull)
+├── ansible-pull.sh        # Bootstrap script
+└── README.md
+```

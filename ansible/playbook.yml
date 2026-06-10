@@ -1,0 +1,53 @@
+---
+- name: Apply dotfiles configuration
+  hosts: all
+  gather_facts: true
+  vars:
+    dotfiles_dir: "{{ lookup('env', 'DOTFILES_DIR') | default('~/dotfiles', true) }}"
+    brew_prefix: "{{ '/opt/homebrew' if ansible_architecture == 'arm64' and ansible_system == 'Darwin' else '/usr/local' }}"
+
+  pre_tasks:
+    - name: Ensure ~/.config exists
+      file:
+        path: "{{ ansible_env.HOME }}/.config"
+        state: directory
+        mode: "0755"
+
+    - name: Install stow (macOS)
+      community.general.homebrew:
+        name: stow
+        state: present
+      when: ansible_system == "Darwin"
+
+    - name: Install stow (Linux)
+      apt:
+        name: stow
+        state: present
+      become: true
+      when: ansible_os_family == "Debian"
+
+    - name: Install rsync (Linux)
+      apt:
+        name: rsync
+        state: present
+      become: true
+      when: ansible_os_family == "Debian"
+
+    - name: Run stow to symlink dotfiles from repo
+      command:
+        cmd: stow .
+        chdir: "{{ dotfiles_dir }}"
+      register: stow_result
+      changed_when: "'LINK' in stow_result.stderr"
+
+  roles:
+    - role: core
+      tags: [core, minimal, dev]
+    - role: terminal
+      tags: [terminal, minimal, dev]
+    - role: editors
+      tags: [editors, minimal, dev]
+    - role: tools
+      tags: [tools, minimal, dev]
+    - role: dev
+      tags: [dev, node, python, go, java, docker, aerospace]

@@ -1,0 +1,63 @@
+---
+- name: Install zsh (macOS)
+  community.general.homebrew:
+    name: zsh
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install zsh (Linux)
+  apt:
+    name: zsh
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Set zsh as default shell
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+  become: true
+
+- name: Install Oh My Zsh
+  git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    depth: 1
+
+- name: Install zsh-autosuggestions (macOS)
+  community.general.homebrew:
+    name: zsh-autosuggestions
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install zsh-autosuggestions (Linux)
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    depth: 1
+  when: ansible_os_family == "Debian"
+
+- name: Install zsh-syntax-highlighting (macOS)
+  community.general.homebrew:
+    name: zsh-syntax-highlighting
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install zsh-syntax-highlighting (Linux)
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    depth: 1
+  when: ansible_os_family == "Debian"
+
+- name: Deploy .zshenv
+  template:
+    src: zshenv.j2
+    dest: "{{ ansible_env.HOME }}/.zshenv"
+    mode: "0644"
+
+- name: Deploy .zshrc template
+  template:
+    src: zshrc.j2
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    mode: "0644"

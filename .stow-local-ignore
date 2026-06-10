@@ -1,3 +1,5 @@
 wallpapers
 .git
 .gitignore
+ansible
+ansible-pull.sh

@@ -1,0 +1,15 @@
+---
+all:
+  hosts:
+    testbox:
+      ansible_host: localhost
+      ansible_port: 2222
+      ansible_user: testuser
+      ansible_ssh_private_key_file: /tmp/testbox_key
+      ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+      ansible_become_method: sudo
+      ansible_become_password: testuser
+      ansible_connection: ssh
+      ansible_python_interpreter: /usr/bin/python3
+      dotfiles_dir: /dotfiles
+      location: home

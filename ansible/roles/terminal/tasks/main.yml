@@ -1,0 +1,103 @@
+---
+- name: Install tmux (macOS)
+  community.general.homebrew:
+    name: tmux
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install tmux (Linux)
+  apt:
+    name: tmux
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Ensure .tmux/plugins directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.tmux/plugins"
+    state: directory
+    mode: "0755"
+
+- name: Install TPM (Tmux Plugin Manager)
+  git:
+    repo: https://github.com/tmux-plugins/tpm.git
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+    depth: 1
+
+- name: Install tmux-resurrect
+  git:
+    repo: https://github.com/tmux-plugins/tmux-resurrect.git
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tmux-resurrect"
+    depth: 1
+
+- name: Install tmux-continuum
+  git:
+    repo: https://github.com/tmux-plugins/tmux-continuum.git
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tmux-continuum"
+    depth: 1
+
+- name: Install vim-tmux-navigator
+  git:
+    repo: https://github.com/christoomey/vim-tmux-navigator.git
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/vim-tmux-navigator"
+    depth: 1
+
+- name: Install catppuccin tmux theme
+  git:
+    repo: https://github.com/catppuccin/tmux.git
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/catppuccin"
+    depth: 1
+
+- name: Install wezterm (macOS)
+  community.general.homebrew:
+    name: wezterm
+    state: present
+    casks: true
+  when: ansible_system == "Darwin"
+
+- name: Install Nerd Fonts (macOS)
+  community.general.homebrew:
+    name: "{{ item }}"
+    state: present
+    casks: true
+  loop:
+    - font-jetbrains-mono-nerd-font
+    - font-meslo-lg-nerd-font
+    - font-hack-nerd-font
+  when: ansible_system == "Darwin"
+
+- name: Install Nerd Fonts (Linux)
+  block:
+    - name: Install unzip and fontconfig
+      apt:
+        name:
+          - unzip
+          - fontconfig
+        state: present
+      become: true
+
+    - name: Ensure font directory exists
+      file:
+        path: "{{ ansible_env.HOME }}/.local/share/fonts"
+        state: directory
+        mode: "0755"
+      check_mode: false
+
+    - name: Check if JetBrains Mono is already installed
+      stat:
+        path: "{{ ansible_env.HOME }}/.local/share/fonts/JetBrainsMonoNerdFont-Regular.ttf"
+      register: font_installed
+
+    - name: Download JetBrains Mono Nerd Font
+      unarchive:
+        src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+        dest: "{{ ansible_env.HOME }}/.local/share/fonts"
+        remote_src: true
+      when: not font_installed.stat.exists
+
+    - name: Update font cache
+      command: fc-cache -fv
+      changed_when: false
+  when: ansible_os_family == "Debian"
+
+

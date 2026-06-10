@@ -1,0 +1,137 @@
+---
+- name: Install core CLI tools (macOS)
+  community.general.homebrew:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - eza
+    - fzf
+    - zoxide
+    - ripgrep
+    - tldr
+    - gh
+    - lazygit
+  when: ansible_system == "Darwin"
+
+- name: Install core CLI tools (Linux)
+  apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop:
+    - ripgrep
+    - fzf
+    - tldr
+  when: ansible_os_family == "Debian"
+
+- name: Install lazygit (Linux)
+  block:
+    - name: Get latest lazygit version
+      uri:
+        url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
+        return_content: true
+      register: lazygit_release
+
+    - name: Set lazygit arch fact
+      set_fact:
+        lazygit_arch: "{{ 'arm64' if ansible_facts.architecture == 'aarch64' else 'x86_64' }}"
+
+    - name: Download lazygit
+      get_url:
+        url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_release.json.tag_name[1:] }}_Linux_{{ lazygit_arch }}.tar.gz"
+        dest: /tmp/lazygit.tar.gz
+
+    - name: Extract lazygit
+      unarchive:
+        src: /tmp/lazygit.tar.gz
+        dest: /usr/local/bin
+        remote_src: true
+        creates: /usr/local/bin/lazygit
+      become: true
+  when: ansible_os_family == "Debian"
+
+- name: Install eza (Linux)
+  block:
+    - name: Set eza arch fact
+      set_fact:
+        eza_arch: "{{ 'aarch64' if ansible_facts.architecture == 'aarch64' else 'x86_64' }}"
+
+    - name: Download eza
+      get_url:
+        url: "https://github.com/eza-community/eza/releases/latest/download/eza_{{ eza_arch }}-unknown-linux-gnu.tar.gz"
+        dest: /tmp/eza.tar.gz
+
+    - name: Extract eza
+      unarchive:
+        src: /tmp/eza.tar.gz
+        dest: /usr/local/bin
+        remote_src: true
+        creates: /usr/local/bin/eza
+      become: true
+  when: ansible_os_family == "Debian"
+
+- name: Install zoxide (Linux)
+  block:
+    - name: Get latest zoxide version
+      uri:
+        url: https://api.github.com/repos/ajeetdsouza/zoxide/releases/latest
+        return_content: true
+      register: zoxide_release
+
+    - name: Set zoxide arch fact
+      set_fact:
+        zoxide_arch: "{{ 'aarch64' if ansible_facts.architecture == 'aarch64' else 'x86_64' }}"
+        zoxide_ver: "{{ zoxide_release.json.tag_name[1:] }}"
+
+    - name: Download zoxide
+      get_url:
+        url: "https://github.com/ajeetdsouza/zoxide/releases/latest/download/zoxide-{{ zoxide_ver }}-{{ zoxide_arch }}-unknown-linux-musl.tar.gz"
+        dest: /tmp/zoxide.tar.gz
+
+    - name: Extract zoxide
+      unarchive:
+        src: /tmp/zoxide.tar.gz
+        dest: /usr/local/bin
+        remote_src: true
+        creates: /usr/local/bin/zoxide
+      become: true
+  when: ansible_os_family == "Debian"
+
+- name: Install gh (Linux)
+  block:
+    - name: Add GitHub CLI GPG key
+      apt_key:
+        url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+        state: present
+      become: true
+
+    - name: Add GitHub CLI repository
+      apt_repository:
+        repo: deb https://cli.github.com/packages stable main
+        state: present
+      become: true
+
+    - name: Install gh
+      apt:
+        name: gh
+        state: present
+      become: true
+  when: ansible_os_family == "Debian"
+
+- name: Deploy gitconfig
+  template:
+    src: gitconfig.j2
+    dest: "{{ ansible_env.HOME }}/.gitconfig"
+    mode: "0644"
+
+- name: Sync lazygit config
+  synchronize:
+    src: "{{ dotfiles_dir }}/.config/lazygit/"
+    dest: "{{ ansible_env.HOME }}/.config/lazygit/"
+    delete: true
+
+- name: Sync gh config
+  synchronize:
+    src: "{{ dotfiles_dir }}/.config/gh/"
+    dest: "{{ ansible_env.HOME }}/.config/gh/"
+    delete: true
