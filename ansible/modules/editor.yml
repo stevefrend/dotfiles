@@ -10,8 +10,11 @@
   when: ansible_os_family == "Debian"
   block:
     - name: Install neovim runtime dependencies
+      # build-essential supplies cc/gcc + libc headers so nvim-treesitter
+      # (main branch) can compile parsers from C. macOS gets this from the
+      # Xcode CLT; bare Debian has no compiler without it.
       apt:
-        name: [curl, ripgrep, xsel]
+        name: [curl, ripgrep, xsel, build-essential]
         state: present
       become: true
 
