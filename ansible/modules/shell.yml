@@ -14,11 +14,22 @@
     state: present
   become: true
 
+# Only change the login shell (which needs sudo) if it isn't already zsh.
+# macOS already defaults to /bin/zsh, so this skips entirely there -- meaning a
+# macOS run needs no sudo at all. On a fresh Linux box the shell is bash, so it
+# runs (and apt already requires sudo there anyway).
+- name: Detect current login shell
+  command: "{{ 'dscl . -read /Users/' ~ ansible_user_id ~ ' UserShell' if ansible_system == 'Darwin' else 'getent passwd ' ~ ansible_user_id }}"
+  register: login_shell
+  changed_when: false
+  check_mode: false
+
 - name: Set zsh as default shell
   user:
     name: "{{ ansible_user_id }}"
     shell: /bin/zsh
   become: true
+  when: "'zsh' not in login_shell.stdout"
 
 - name: Install Oh My Zsh
   git:
