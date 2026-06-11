@@ -9,7 +9,7 @@ font-size = 15
 # (and tmux) don't trip over ghostty's default xterm-ghostty.
 term = xterm-256color
 
-background-opacity = 0.8
+background-opacity = 0.9
 background-blur-radius = 45
 
 window-padding-x = 20
