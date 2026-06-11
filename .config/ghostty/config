@@ -1,6 +1,6 @@
 # Ported from .wezterm.lua
 
-theme = TokyoNight
+theme = Catppuccin Macchiato
 
 font-family = JetBrainsMono Nerd Font
 font-size = 15
