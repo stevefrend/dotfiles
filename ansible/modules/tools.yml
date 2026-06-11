@@ -1,9 +1,27 @@
 ---
-# CLI tools: eza, fzf, zoxide, ripgrep, tldr, gh, lazygit.
+# CLI tools: eza, fzf, zoxide, ripgrep, tlrc, gh, lazygit.
 # Config (lazygit, etc.) is stow-managed — nothing here syncs it.
+# (macOS uses `tlrc` -- the maintained tldr client; Homebrew deprecated the old
+#  `tldr` formula in 2025. Both provide the `tldr` command.)
 - name: Install CLI tools (macOS)
   community.general.homebrew:
-    name: [eza, fzf, zoxide, ripgrep, tldr, gh, lazygit]
+    name: [eza, fzf, zoxide, ripgrep, tlrc, gh, lazygit]
+    state: present
+  when: ansible_system == "Darwin"
+
+# hunk: terminal diff viewer (https://hunk.dev), from the modem-dev tap.
+# macOS only -- the cross-platform alternative is `npm i -g hunkdiff`, but node
+# isn't ansible-managed here, so we skip Linux (same call as the macOS-only
+# Nerd Fonts in terminal.yml).
+- name: Tap modem-dev (hunk)
+  community.general.homebrew_tap:
+    name: modem-dev/tap
+    state: present
+  when: ansible_system == "Darwin"
+
+- name: Install hunk (macOS)
+  community.general.homebrew:
+    name: hunk
     state: present
   when: ansible_system == "Darwin"
 
