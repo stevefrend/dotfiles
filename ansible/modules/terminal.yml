@@ -36,12 +36,6 @@
     # catppuccin clones into a dir named "tmux"; use it as the done-marker.
     creates: "{{ ansible_env.HOME }}/.tmux/plugins/tmux"
 
-- name: Install wezterm (macOS)
-  community.general.homebrew_cask:
-    name: wezterm
-    state: present
-  when: ansible_system == "Darwin"
-
 - name: Install ghostty (macOS)
   when: ansible_system == "Darwin"
   community.general.homebrew_cask:

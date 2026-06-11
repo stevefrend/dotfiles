@@ -42,7 +42,7 @@ ansible-playbook ansible/playbook.yml --tags tmux,git      # compose several
 | `foundations` | the whole base (all rows below) |
 | `stow`        | GNU Stow + symlinks this repo into `$HOME` |
 | `shell` / `zsh` | zsh, Oh My Zsh, autosuggestions, syntax-highlighting |
-| `terminal` / `tmux` | tmux + TPM/resurrect/continuum/navigator/catppuccin; wezterm + Nerd Fonts (macOS) |
+| `terminal` / `tmux` | tmux + TPM/resurrect/continuum/navigator/catppuccin; ghostty + Nerd Fonts (macOS) |
 | `editor` / `neovim` | neovim |
 | `tools`       | eza, fzf, zoxide, ripgrep, tldr, gh, lazygit |
 | `git`         | git aliases + pull/push settings (idempotent; see below) |
@@ -110,8 +110,8 @@ dotfiles/
 │   ├── Dockerfile.testbox        # slim Debian test image
 │   ├── testbox.sh                # up/check/ansible/shell/down
 │   └── local.vars.yml.example    # untracked per-machine overrides
-├── .config/                      # nvim, lazygit, aerospace, ... (stow-managed)
-├── .tmux.conf  .wezterm.lua  .zshrc  .zprofile   # stow-managed
+├── .config/                      # nvim, lazygit, aerospace, ghostty, ... (stow-managed)
+├── .tmux.conf  .zshrc  .zprofile   # stow-managed
 ├── ansible-pull.sh               # bootstrap a fresh machine
 └── README.md
 ```
