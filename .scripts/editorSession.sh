@@ -21,9 +21,10 @@ if ! tmux has-session -t="$SESSION_NAME" 2>/dev/null; then
   # `<app>; exec zsh` runs the app, then drops to an interactive shell on exit
   # (so quitting nvim / an empty `hunk diff` leaves a usable shell, not a dead pane).
   tmux new-session   -d -s "$SESSION_NAME" -c "$START_DIR" -n nvim    'nvim; exec zsh'
-  # Window 2: claude (left) + `hunk diff` (right), claude focused.
+  # Window 2: claude (~30%, left) + `hunk diff` (~70%, right), claude focused.
+  # `-l 70%` sizes the NEW (hunk) pane, leaving claude at ~30% of the width.
   tmux new-window    -t "$SESSION_NAME":2  -c "$START_DIR" -n claude  'claude; exec zsh'
-  tmux split-window  -h -t "$SESSION_NAME":2 -c "$START_DIR"          'hunk diff; exec zsh'
+  tmux split-window  -h -l 70% -t "$SESSION_NAME":2 -c "$START_DIR"   'hunk diff; exec zsh'
   tmux select-pane   -t "$SESSION_NAME":2 -L
   tmux new-window    -t "$SESSION_NAME":3  -c "$START_DIR" -n lazygit 'lazygit; exec zsh'
   tmux new-window    -t "$SESSION_NAME":4  -c "$START_DIR" -n zsh
