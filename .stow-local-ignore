@@ -4,4 +4,4 @@ wallpapers
 ansible
 ansible-pull.sh
 README.md
-.zshrc.original
+.*\.example

@@ -1,9 +1,11 @@
 export LANG="en_US.UTF-8"
 
-# $LOCATION variable expected in ~/.zshenv
-if [[ "$LOCATION" == "work" ]]; then
-  echo "Loading Pax8 config from ~/.zshwork"
-  source ~/.zshwork
+# Location-specific environment + secrets, kept OUT of this public repo.
+# ~/.zshenv sets LOCATION (e.g. "work"/"personal"); this sources the matching
+# untracked ~/.zshenv.<location> if it exists. See .zshenv.example and
+# .zshenv.work.example for the expected shape.
+if [[ -n "$LOCATION" && -f "$HOME/.zshenv.$LOCATION" ]]; then
+  source "$HOME/.zshenv.$LOCATION"
 fi
 
 
@@ -75,7 +77,6 @@ alias k='clear'
 alias find_node='lsof -i :9000'
 alias kill_node='kill -9'
 alias session='~/dotfiles/.scripts/tmuxFrontendInitializer.sh'
-alias python='python3'
 
 # history setup
 HISTFILE=$HOME/.zhistory

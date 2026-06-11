@@ -1,0 +1,17 @@
+# Template for ~/.zshenv.work  (copy to ~/.zshenv.work and fill in real values).
+#
+# This file holds location-specific environment and SECRETS. The real file is
+# gitignored and must NEVER be committed. ~/.zshrc sources it automatically when
+# ~/.zshenv sets LOCATION=work (see .zshenv.example).
+#
+# The same pattern works for any location: ~/.zshenv.personal, ~/.zshenv.home, …
+#
+# Put machine-/work-specific exports here. Generic examples (uncomment + edit):
+#
+#   export AWS_PROFILE="..."
+#   export SOME_DB_USER="..."
+#   export SOME_DB_PASSWORD="..."
+#   export SOME_REGISTRY_TOKEN="..."
+#
+# Tip: this is just a sourced shell script, so anything valid in zsh works
+# (PATH additions, aliases, functions, `eval "$(some-tool init)"`, …).

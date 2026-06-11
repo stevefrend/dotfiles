@@ -55,6 +55,25 @@ clobbers an existing identity. Defaults are the personal identity; a work identi
 committed to this repo — set it per-machine via `--extra-vars` or an untracked
 `ansible/local.vars.yml` (copy `ansible/local.vars.yml.example`).
 
+### Secrets & per-machine env
+
+No secrets live in this repo. Machine-specific environment and secrets are kept
+in **untracked real files in `$HOME`**, loaded by a small convention:
+
+- `~/.zshenv` declares the machine's `LOCATION` (e.g. `work` / `personal`).
+- `~/.zshrc` then sources `~/.zshenv.<LOCATION>` if it exists — so work secrets
+  live in `~/.zshenv.work`, personal ones in `~/.zshenv.personal`, etc.
+
+These files are gitignored (`.zshenv`, `.zshenv.*`) and only their templates are
+committed. On a new machine:
+
+```bash
+cp .zshenv.example ~/.zshenv                 # then edit LOCATION
+cp .zshenv.work.example ~/.zshenv.work       # then fill in real values (work box only)
+```
+
+(Work git identity is handled separately — see *Git config* above.)
+
 ## Testing on Debian (colima-safe)
 
 A lightweight throwaway container runs the playbook over a **local connection** — no sshd, no
