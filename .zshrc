@@ -38,9 +38,22 @@ for _zsh_plugin in \
   [ -f "$_zsh_plugin" ] && source "$_zsh_plugin" && break
 done
 
+# nvm: lazy-load. Sourcing nvm.sh costs ~0.3s on every shell, so defer it until
+# the first nvm/node/npm/npx/corepack call. The stubs source the real nvm.sh
+# (which resolves the configured default, e.g. lts/*) then re-run the command,
+# so behaviour is identical to eager loading -- just no startup cost.
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  _lazy_load_nvm() {
+    unset -f nvm node npm npx corepack 2>/dev/null
+    \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  }
+  for _cmd in nvm node npm npx corepack; do
+    eval "${_cmd}() { _lazy_load_nvm; ${_cmd} \"\$@\"; }"
+  done
+  unset _cmd
+fi
 
 # ENV
 
@@ -90,11 +103,19 @@ for _zsh_plugin in \
   [ -f "$_zsh_plugin" ] && source "$_zsh_plugin" && break
 done
 
-# pyenv setup (python) — only if pyenv is actually installed
+# pyenv setup (python) — only if pyenv is actually installed.
+# The shims resolve the right version (global / .python-version) on their own,
+# so putting bin + shims on PATH makes python/pip work instantly. Defer the slow
+# `pyenv init - zsh` integration (~0.3s; auto-rehash, `pyenv shell`, completion)
+# until the first `pyenv` command.
 export PYENV_ROOT="$HOME/.pyenv"
 if [[ -d $PYENV_ROOT/bin ]]; then
-  export PATH="$PYENV_ROOT/bin:$PATH"
-  command -v pyenv >/dev/null 2>&1 && eval "$(pyenv init - zsh)"
+  export PATH="$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH"
+  pyenv() {
+    unset -f pyenv
+    eval "$(command pyenv init - zsh)"
+    pyenv "$@"
+  }
 fi
 
 export ZSH="$HOME/.oh-my-zsh"
