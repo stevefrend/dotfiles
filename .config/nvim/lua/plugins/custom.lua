@@ -4,8 +4,16 @@ return {
       "stevearc/conform.nvim",
       opts = {
         default_format_opts = {
-          lsp_fallback = true,
-          timeout_ms = 5000,
+          -- `lsp_format = "fallback"` is also the LazyVim default; it replaces
+          -- the deprecated `lsp_fallback` key. The big 5s timeout was a band-aid
+          -- for slow `prettier` cold-starts -- prettierd (see prettier.lua) keeps
+          -- formats ~60ms, so the default 3s ceiling is plenty.
+          lsp_format = "fallback",
+          timeout_ms = 3000,
+          -- prettier.lua maps prettier filetypes to { "prettierd", "prettier" };
+          -- stop_after_first runs prettierd and only falls back to prettier if
+          -- prettierd is unavailable (instead of running both).
+          stop_after_first = true,
         },
       },
     },
