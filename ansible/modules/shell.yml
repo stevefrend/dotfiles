@@ -2,17 +2,17 @@
 # zsh + oh-my-zsh + autosuggestions + syntax-highlighting.
 # The .zshrc itself is stow-managed (and portable) — nothing here writes it.
 - name: Install zsh (macOS)
+  when: ansible_system == "Darwin"
   community.general.homebrew:
     name: zsh
     state: present
-  when: ansible_system == "Darwin"
 
 - name: Install zsh (Linux)
+  when: ansible_os_family == "Debian"
   apt:
     name: zsh
     state: present
   become: true
-  when: ansible_os_family == "Debian"
 
 - name: Set zsh as default shell
   user:
@@ -28,29 +28,29 @@
     version: master
 
 - name: Install zsh-autosuggestions (macOS)
+  when: ansible_system == "Darwin"
   community.general.homebrew:
     name: zsh-autosuggestions
     state: present
-  when: ansible_system == "Darwin"
 
 - name: Install zsh-autosuggestions (Linux)
+  when: ansible_os_family == "Debian"
   git:
     repo: https://github.com/zsh-users/zsh-autosuggestions.git
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
     depth: 1
     version: master
-  when: ansible_os_family == "Debian"
 
 - name: Install zsh-syntax-highlighting (macOS)
+  when: ansible_system == "Darwin"
   community.general.homebrew:
     name: zsh-syntax-highlighting
     state: present
-  when: ansible_system == "Darwin"
 
 - name: Install zsh-syntax-highlighting (Linux)
+  when: ansible_os_family == "Debian"
   git:
     repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
     depth: 1
     version: master
-  when: ansible_os_family == "Debian"

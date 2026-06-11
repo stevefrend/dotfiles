@@ -27,12 +27,12 @@
     # Refresh the package index so apt installs in any module resolve on a
     # fresh box. Tagged `always` so it runs even for a single-module invocation.
     - name: Update apt cache (Linux)
+      when: ansible_os_family == "Debian"
       tags: always
       apt:
         update_cache: true
         cache_valid_time: 3600
       become: true
-      when: ansible_os_family == "Debian"
 
   tasks:
     - name: stow

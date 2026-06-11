@@ -2,17 +2,17 @@
 # tmux + plugins, and (macOS only) the GUI terminal and fonts.
 # On a headless Linux rig, fonts render on the SSH client, so we skip them.
 - name: Install tmux (macOS)
+  when: ansible_system == "Darwin"
   community.general.homebrew:
     name: tmux
     state: present
-  when: ansible_system == "Darwin"
 
 - name: Install tmux (Linux)
+  when: ansible_os_family == "Debian"
   apt:
     name: tmux
     state: present
   become: true
-  when: ansible_os_family == "Debian"
 
 # tmux plugins are not vendored in the repo. Install TPM, then let it install
 # whatever .tmux.conf declares (`set -g @plugin ...`) — so the plugin list and
@@ -43,12 +43,13 @@
   when: ansible_system == "Darwin"
 
 - name: Install ghostty (macOS)
+  when: ansible_system == "Darwin"
   community.general.homebrew_cask:
     name: ghostty
     state: present
-  when: ansible_system == "Darwin"
 
 - name: Install Nerd Fonts (macOS)
+  when: ansible_system == "Darwin"
   community.general.homebrew_cask:
     name: "{{ item }}"
     state: present
@@ -56,4 +57,3 @@
     - font-jetbrains-mono-nerd-font
     - font-meslo-lg-nerd-font
     - font-hack-nerd-font
-  when: ansible_system == "Darwin"
