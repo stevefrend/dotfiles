@@ -37,6 +37,7 @@
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh"
     depth: 1
     version: master
+    force: true  # never hand-edited; force past local modifications in the clone
 
 - name: Install zsh-autosuggestions (macOS)
   when: ansible_system == "Darwin"
@@ -51,6 +52,7 @@
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
     depth: 1
     version: master
+    force: true
 
 - name: Install zsh-syntax-highlighting (macOS)
   when: ansible_system == "Darwin"
@@ -65,3 +67,4 @@
     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
     depth: 1
     version: master
+    force: true

@@ -29,6 +29,9 @@
     dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
     depth: 1
     version: master
+    # We never hand-edit TPM; force past any local modifications in the clone
+    # (otherwise the module errors: "Local modifications exist in the destination").
+    force: true
 
 - name: Install tmux plugins declared in .tmux.conf
   command: "{{ ansible_env.HOME }}/.tmux/plugins/tpm/bin/install_plugins"
