@@ -77,6 +77,7 @@ alias k='clear'
 alias find_node='lsof -i :9000'
 alias kill_node='kill -9'
 alias session='~/dotfiles/.scripts/tmuxFrontendInitializer.sh'
+alias edit='~/dotfiles/.scripts/editorSession.sh'   # nvim | claude | hunk diff | zsh | zsh
 
 # history setup
 HISTFILE=$HOME/.zhistory
