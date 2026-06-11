@@ -15,11 +15,15 @@ Works on **macOS** and **Debian/Linux**.
 
 ```bash
 git clone https://github.com/stevefrend/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+cd ~/dotfiles/ansible   # run from here: ansible.cfg (inventory, output, …) is in this dir
 
 # Install the base environment (zsh, tmux, neovim, CLI tools, git config) + symlink dotfiles
-ansible-playbook ansible/playbook.yml --tags foundations
+ansible-playbook playbook.yml --tags foundations
 ```
+
+> Run `ansible-playbook` from the `ansible/` directory. Ansible only auto-loads
+> `ansible.cfg` from the current directory, and that's what wires up the
+> inventory — run it from the repo root and you'll get *"skipping: no hosts matched"*.
 
 Bootstrapping a fresh box (installs Ansible first, then pulls and runs):
 
@@ -29,12 +33,12 @@ Bootstrapping a fresh box (installs Ansible first, then pulls and runs):
 
 ## Modules
 
-Run the whole base, or target one piece by tag:
+Run the whole base, or target one piece by tag (from the `ansible/` directory):
 
 ```bash
-ansible-playbook ansible/playbook.yml --tags foundations   # everything below
-ansible-playbook ansible/playbook.yml --tags neovim        # just neovim
-ansible-playbook ansible/playbook.yml --tags tmux,git      # compose several
+ansible-playbook playbook.yml --tags foundations   # everything below
+ansible-playbook playbook.yml --tags neovim        # just neovim
+ansible-playbook playbook.yml --tags tmux,git      # compose several
 ```
 
 | Tag           | Installs |
@@ -115,7 +119,7 @@ so it stays opt-in):
       tags: [go]
 ```
 
-Now `ansible-playbook ansible/playbook.yml --tags go` sets you up with Go.
+Now `ansible-playbook playbook.yml --tags go` (from `ansible/`) sets you up with Go.
 
 ## Structure
 
