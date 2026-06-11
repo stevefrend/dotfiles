@@ -10,7 +10,10 @@
   hosts: all
   gather_facts: true
   vars:
-    dotfiles_dir: "{{ lookup('env', 'DOTFILES_DIR') | default('~/dotfiles', true) }}"
+    # Absolute path -- the `command` module that runs stow has no shell to
+    # expand a literal `~`, so a "~/dotfiles" default makes `--dir` (its dirname)
+    # `~` and stow errors with "not a valid directory".
+    dotfiles_dir: "{{ lookup('env', 'DOTFILES_DIR') | default(ansible_env.HOME ~ '/dotfiles', true) }}"
     brew_prefix: "{{ '/opt/homebrew' if ansible_architecture == 'arm64' and ansible_system == 'Darwin' else '/usr/local' }}"
     location: "{{ lookup('env', 'LOCATION') | default('home', true) }}"
 
