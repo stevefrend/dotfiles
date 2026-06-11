@@ -1,0 +1,19 @@
+# Lightweight Debian box for testing the playbook locally.
+# No platform pin -> builds for the host arch (arm64 under colima, no QEMU).
+# No sshd, no SYS_ADMIN, no exposed ports: ansible runs *inside* the container
+# over a local connection, so this stays a single cheap container that won't
+# disturb colima or your other running containers.
+FROM debian:bookworm
+
+RUN apt-get update -qq \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+       ansible git stow sudo curl ca-certificates locales python3-apt \
+  && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen \
+  && useradd -m -s /bin/bash dev \
+  && echo 'dev ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+
+USER dev
+WORKDIR /home/dev
+ENV LANG=en_US.UTF-8
+
+CMD ["sleep", "infinity"]

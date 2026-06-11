@@ -1,0 +1,63 @@
+---
+# Modular dotfiles setup. Ansible installs packages and runs stow;
+# stow owns every config symlink. This playbook never writes ~/.zshrc,
+# ~/.zshenv, or ~/.gitconfig.
+#
+# Run the whole base:   ansible-playbook ansible/playbook.yml --tags foundations
+# Run one piece:        ansible-playbook ansible/playbook.yml --tags neovim
+#                       ansible-playbook ansible/playbook.yml --tags git
+- name: dotfiles
+  hosts: all
+  gather_facts: true
+  vars:
+    # Absolute path -- the `command` module that runs stow has no shell to
+    # expand a literal `~`, so a "~/dotfiles" default makes `--dir` (its dirname)
+    # `~` and stow errors with "not a valid directory".
+    dotfiles_dir: "{{ lookup('env', 'DOTFILES_DIR') | default(ansible_env.HOME ~ '/dotfiles', true) }}"
+    brew_prefix: "{{ '/opt/homebrew' if ansible_architecture == 'arm64' and ansible_system == 'Darwin' else '/usr/local' }}"
+    location: "{{ lookup('env', 'LOCATION') | default('home', true) }}"
+
+  pre_tasks:
+    # Make sure ~/.config exists so stow creates per-entry symlinks
+    # (~/.config/nvim -> repo) instead of one wholesale ~/.config symlink.
+    - name: Ensure ~/.config exists
+      tags: always
+      file:
+        path: "{{ ansible_env.HOME }}/.config"
+        state: directory
+        mode: "0755"
+
+    # Refresh the package index so apt installs in any module resolve on a
+    # fresh box. Tagged `always` so it runs even for a single-module invocation.
+    - name: Update apt cache (Linux)
+      when: ansible_os_family == "Debian"
+      tags: always
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+      become: true
+
+  tasks:
+    - name: stow
+      import_tasks: modules/stow.yml
+      tags: [foundations, stow]
+
+    - name: shell
+      import_tasks: modules/shell.yml
+      tags: [foundations, shell, zsh]
+
+    - name: terminal
+      import_tasks: modules/terminal.yml
+      tags: [foundations, terminal, tmux]
+
+    - name: editor
+      import_tasks: modules/editor.yml
+      tags: [foundations, editor, neovim]
+
+    - name: tools
+      import_tasks: modules/tools.yml
+      tags: [foundations, tools]
+
+    - name: git
+      import_tasks: modules/git.yml
+      tags: [foundations, git]

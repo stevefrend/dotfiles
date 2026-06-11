@@ -1,0 +1,49 @@
+---
+# Git config, done idempotently and WITHOUT clobbering an existing identity.
+#
+# - Safe, non-identity settings (aliases, pull/push behaviour) are always set.
+# - user.name / user.email are set ONLY if not already configured globally, so
+#   running this on a machine that already has an identity leaves it untouched.
+# - Defaults below are the personal identity. A work identity is NOT committed
+#   to this repo; set it per-machine via --extra-vars or an untracked
+#   ansible/local.vars.yml (see below).
+- name: Load untracked local overrides if present
+  include_vars: "{{ playbook_dir }}/local.vars.yml"
+  failed_when: false
+
+- name: Configure safe git settings (global)
+  community.general.git_config:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    scope: global
+  loop:
+    - { name: "pull.rebase", value: "false" }
+    - { name: "push.autoSetupRemote", value: "true" }
+    - { name: "push.default", value: "simple" }
+
+- name: Read existing global git identity
+  command: git config --global --get {{ item }}
+  loop:
+    - user.name
+    - user.email
+  register: git_identity
+  changed_when: false
+  failed_when: false
+
+- name: Configure git identity (only if not already set)
+  community.general.git_config:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    scope: global
+  loop:
+    - {
+        name: "user.name",
+        value: "{{ git_user_name | default('steve') }}",
+        existing: "{{ git_identity.results[0].stdout }}",
+      }
+    - {
+        name: "user.email",
+        value: "{{ git_user_email | default('stevefrend1@gmail.com') }}",
+        existing: "{{ git_identity.results[1].stdout }}",
+      }
+  when: item.existing | length == 0

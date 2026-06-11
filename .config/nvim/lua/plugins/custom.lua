@@ -4,8 +4,18 @@ return {
       "stevearc/conform.nvim",
       opts = {
         default_format_opts = {
-          lsp_fallback = true,
-          timeout_ms = 5000,
+          -- `lsp_format = "fallback"` is also the LazyVim default; it replaces
+          -- the deprecated `lsp_fallback` key.
+          lsp_format = "fallback",
+          -- Warm prettierd formats are ~100ms. prettier.lua pre-warms the daemon
+          -- on the first JS/TS/Vue buffer, so saves are normally warm. This high
+          -- timeout is just a safety net: if you save during the brief cold-boot
+          -- warm-up window, the format succeeds (slowly) instead of timing out.
+          timeout_ms = 8000,
+          -- prettier.lua maps prettier filetypes to { "prettierd", "prettier" };
+          -- stop_after_first runs prettierd and only falls back to prettier if
+          -- prettierd is unavailable (instead of running both).
+          stop_after_first = true,
         },
       },
     },

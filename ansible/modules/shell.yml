@@ -1,0 +1,70 @@
+---
+# zsh + oh-my-zsh + autosuggestions + syntax-highlighting.
+# The .zshrc itself is stow-managed (and portable) — nothing here writes it.
+- name: Install zsh (macOS)
+  when: ansible_system == "Darwin"
+  community.general.homebrew:
+    name: zsh
+    state: present
+
+- name: Install zsh (Linux)
+  when: ansible_os_family == "Debian"
+  apt:
+    name: zsh
+    state: present
+  become: true
+
+# Only change the login shell (which needs sudo) if it isn't already zsh.
+# macOS already defaults to /bin/zsh, so this skips entirely there -- meaning a
+# macOS run needs no sudo at all. On a fresh Linux box the shell is bash, so it
+# runs (and apt already requires sudo there anyway).
+- name: Detect current login shell
+  command: "{{ 'dscl . -read /Users/' ~ ansible_user_id ~ ' UserShell' if ansible_system == 'Darwin' else 'getent passwd ' ~ ansible_user_id }}"
+  register: login_shell
+  changed_when: false
+  check_mode: false
+
+- name: Set zsh as default shell
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+  become: true
+  when: "'zsh' not in login_shell.stdout"
+
+- name: Install Oh My Zsh
+  git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    depth: 1
+    version: master
+    force: true  # never hand-edited; force past local modifications in the clone
+
+- name: Install zsh-autosuggestions (macOS)
+  when: ansible_system == "Darwin"
+  community.general.homebrew:
+    name: zsh-autosuggestions
+    state: present
+
+- name: Install zsh-autosuggestions (Linux)
+  when: ansible_os_family == "Debian"
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    depth: 1
+    version: master
+    force: true
+
+- name: Install zsh-syntax-highlighting (macOS)
+  when: ansible_system == "Darwin"
+  community.general.homebrew:
+    name: zsh-syntax-highlighting
+    state: present
+
+- name: Install zsh-syntax-highlighting (Linux)
+  when: ansible_os_family == "Debian"
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    depth: 1
+    version: master
+    force: true

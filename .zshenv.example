@@ -1,0 +1,9 @@
+# Template for ~/.zshenv  (copy to ~/.zshenv -- it is NOT tracked in this repo).
+#
+# ~/.zshenv is read by zsh for every shell (login, interactive, scripts), so
+# keep it minimal. Its job here is to declare this machine's LOCATION; ~/.zshrc
+# then sources the matching ~/.zshenv.<location> for location-specific
+# environment and secrets.
+#
+# Common values: "personal", "work". Leave unset for a plain machine.
+export LOCATION="personal"

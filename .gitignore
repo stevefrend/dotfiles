@@ -1,1 +1,9 @@
 .DS_Store
+ansible/.ansible/
+ansible/local.vars.yml
+
+# Local/secret zsh env — never commit. The .example templates ARE tracked.
+.zshenv
+.zshenv.*
+!.zshenv.example
+!.zshenv.*.example
