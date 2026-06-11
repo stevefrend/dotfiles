@@ -33,7 +33,7 @@
 - name: Install tmux plugins declared in .tmux.conf
   command: "{{ ansible_env.HOME }}/.tmux/plugins/tpm/bin/install_plugins"
   args:
-    # catppuccin clones into a dir named "tmux"; use it as the done-marker.
+    # rose-pine/tmux clones into a dir named "tmux"; use it as the done-marker.
     creates: "{{ ansible_env.HOME }}/.tmux/plugins/tmux"
 
 - name: Install ghostty (macOS)

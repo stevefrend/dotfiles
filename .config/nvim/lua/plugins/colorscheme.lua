@@ -1,12 +1,12 @@
--- Consolidate on Catppuccin Macchiato (matches ghostty, tmux, lazygit).
+-- Test: Rosé Pine Moon (matches ghostty, tmux, lazygit).
 return {
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    opts = { flavour = "macchiato" },
+    "rose-pine/neovim",
+    name = "rose-pine",
+    opts = { variant = "moon" },
   },
   {
     "LazyVim/LazyVim",
-    opts = { colorscheme = "catppuccin-macchiato" },
+    opts = { colorscheme = "rose-pine-moon" },
   },
 }

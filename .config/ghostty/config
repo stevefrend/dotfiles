@@ -1,6 +1,6 @@
 # Ported from .wezterm.lua
 
-theme = Catppuccin Macchiato
+theme = Rose Pine Moon
 
 font-family = JetBrainsMono Nerd Font
 font-size = 15

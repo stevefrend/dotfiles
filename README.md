@@ -42,7 +42,7 @@ ansible-playbook ansible/playbook.yml --tags tmux,git      # compose several
 | `foundations` | the whole base (all rows below) |
 | `stow`        | GNU Stow + symlinks this repo into `$HOME` |
 | `shell` / `zsh` | zsh, Oh My Zsh, autosuggestions, syntax-highlighting |
-| `terminal` / `tmux` | tmux + TPM/resurrect/continuum/navigator/catppuccin; ghostty + Nerd Fonts (macOS) |
+| `terminal` / `tmux` | tmux + TPM/resurrect/continuum/navigator/rose-pine; ghostty + Nerd Fonts (macOS) |
 | `editor` / `neovim` | neovim |
 | `tools`       | eza, fzf, zoxide, ripgrep, tldr, gh, lazygit |
 | `git`         | git aliases + pull/push settings (idempotent; see below) |
