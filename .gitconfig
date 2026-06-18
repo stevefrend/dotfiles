@@ -1,0 +1,20 @@
+# Shared git config — tracked in dotfiles, symlinked to ~/.gitconfig.
+# Contains NO identity or secrets. Machine-specific settings (user.email, etc.)
+# live in the untracked ~/.gitconfig.local, included at the bottom so its
+# values override anything shared here. See .gitconfig.local.example.
+[alias]
+	co = checkout
+	c = commit
+	s = status
+	l = log --oneline
+[pull]
+	rebase = false
+[push]
+	autoSetupRemote = true
+	default = simple
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[core]
+	excludesFile = ~/dotfiles/.gitignore_global
+[include]
+	path = ~/.gitconfig.local

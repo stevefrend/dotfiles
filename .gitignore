@@ -7,3 +7,7 @@ ansible/local.vars.yml
 .zshenv.*
 !.zshenv.example
 !.zshenv.*.example
+
+# Machine-local git identity/overrides — never commit. Template IS tracked.
+.gitconfig.local
+!.gitconfig.local.example

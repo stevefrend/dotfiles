@@ -1,0 +1,7 @@
+# Template for ~/.gitconfig.local (copy to ~/.gitconfig.local; NOT tracked).
+# Holds machine-/account-specific git settings, included by the shared
+# ~/dotfiles/.gitconfig. Set your identity here so it never bleeds between
+# work and personal machines.
+[user]
+	name = "Your Name"
+	email = "you@example.com"

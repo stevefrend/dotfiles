@@ -1,0 +1,7 @@
+# Global gitignore — applies to all repos on this machine.
+# Wired up via: git config --global core.excludesFile ~/dotfiles/.gitignore_global
+# Use ONLY for machine-/tool-generated junk that no repo should ever track.
+# Project-specific ignores still belong in each repo's own .gitignore.
+
+# Kotlin Language Server cache (created by neovim/editor LSP integrations)
+kls_database.db
