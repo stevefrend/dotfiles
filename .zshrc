@@ -1,13 +1,9 @@
 export LANG="en_US.UTF-8"
 
-# Location-specific environment + secrets, kept OUT of this public repo.
-# ~/.zshenv sets LOCATION (e.g. "work"/"personal"); this sources the matching
-# untracked ~/.zshenv.<location> if it exists. See .zshenv.example and
-# .zshenv.work.example for the expected shape.
-if [[ -n "$LOCATION" && -f "$HOME/.zshenv.$LOCATION" ]]; then
-  source "$HOME/.zshenv.$LOCATION"
-fi
-
+# Location-specific environment + secrets are sourced from ~/.zshenv (NOT here),
+# so they reach non-interactive shells too — git hooks, GUI clients, scripts.
+# ~/.zshenv sets LOCATION and sources the untracked ~/.zshenv.<location>.
+# See .zshenv.example and .zshenv.work.example for the expected shape.
 
 
 # Uncomment the following line to use hyphen-insensitive completion.

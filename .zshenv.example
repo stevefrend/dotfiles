@@ -1,9 +1,17 @@
 # Template for ~/.zshenv  (copy to ~/.zshenv -- it is NOT tracked in this repo).
 #
-# ~/.zshenv is read by zsh for every shell (login, interactive, scripts), so
-# keep it minimal. Its job here is to declare this machine's LOCATION; ~/.zshrc
-# then sources the matching ~/.zshenv.<location> for location-specific
-# environment and secrets.
+# ~/.zshenv is read by zsh for EVERY shell (login, interactive, AND
+# non-interactive: scripts, git hooks, GUI git clients). It declares this
+# machine's LOCATION and sources the matching ~/.zshenv.<location> for
+# location-specific environment and secrets.
+#
+# This sourcing lives here, not in ~/.zshrc, on purpose: ~/.zshrc only runs for
+# interactive shells, so anything sourced there is missing from git hooks and
+# GUI clients (e.g. private-registry creds needed by pre-commit builds).
 #
 # Common values: "personal", "work". Leave unset for a plain machine.
 export LOCATION="personal"
+
+if [[ -n "$LOCATION" && -f "$HOME/.zshenv.$LOCATION" ]]; then
+  source "$HOME/.zshenv.$LOCATION"
+fi
