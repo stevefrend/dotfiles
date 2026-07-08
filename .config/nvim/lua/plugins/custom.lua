@@ -53,6 +53,10 @@ return {
             files = {
               hidden = true,
             },
+            grep = {
+              hidden = true,
+              args = { "--glob=!.git", "--glob=!node_modules" },
+            },
           },
         },
       },
