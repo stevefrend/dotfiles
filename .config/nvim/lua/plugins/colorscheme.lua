@@ -9,6 +9,11 @@ return {
       -- (rose-pine's equivalent of tokyonight's `transparent = true`;
       -- covers floats/sidebars too).
       styles = { transparency = true },
+      -- rose-pine's default Visual blend (15%) is too close to the
+      -- background to read as a selection; bump it up.
+      highlight_groups = {
+        Visual = { bg = "iris", blend = 35 },
+      },
     },
   },
   {
