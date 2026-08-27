@@ -95,4 +95,12 @@ return {
       vim.keymap.set("n", "<leader>gbt", "<CMD>GitBlameToggle<CR>", { desc = "Git Blame Toggle" })
     end,
   },
+  {
+    "mistweaverco/kulala.nvim",
+    opts = {
+      ui = {
+        max_response_size = 60000,
+      },
+    },
+  },
 }
