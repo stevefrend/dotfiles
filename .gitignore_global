@@ -5,3 +5,5 @@
 
 # Kotlin Language Server cache (created by neovim/editor LSP integrations)
 kls_database.db
+
+**/.claude/settings.local.json
