@@ -40,15 +40,25 @@ done
 # the first nvm/node/npm/npx/corepack call. The stubs source the real nvm.sh
 # (which resolves the configured default, e.g. lts/*) then re-run the command,
 # so behaviour is identical to eager loading -- just no startup cost.
+#
+# Each stub loads nvm.sh itself rather than calling a shared helper: tools that
+# snapshot the shell (Claude Code, some IDE terminals) copy these stubs without
+# the helper, and a stub that can't reach its loader recurses into itself until
+# zsh dies on FUNCNEST. The command -v guard is the second belt -- if the command
+# still isn't there after loading, fail with 127 instead of recursing.
 export NVM_DIR="$HOME/.nvm"
 if [ -s "$NVM_DIR/nvm.sh" ]; then
-  _lazy_load_nvm() {
-    unset -f nvm node npm npx corepack 2>/dev/null
-    \. "$NVM_DIR/nvm.sh"
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-  }
   for _cmd in nvm node npm npx corepack; do
-    eval "${_cmd}() { _lazy_load_nvm; ${_cmd} \"\$@\"; }"
+    eval "${_cmd}() {
+      unset -f nvm node npm npx corepack 2>/dev/null
+      [ -s \"\$NVM_DIR/nvm.sh\" ] && \\. \"\$NVM_DIR/nvm.sh\"
+      [ -s \"\$NVM_DIR/bash_completion\" ] && \\. \"\$NVM_DIR/bash_completion\"
+      if ! command -v ${_cmd} > /dev/null 2>&1; then
+        print -u2 \"${_cmd}: not found after loading nvm (NVM_DIR=\$NVM_DIR)\"
+        return 127
+      fi
+      ${_cmd} \"\$@\"
+    }"
   done
   unset _cmd
 fi
