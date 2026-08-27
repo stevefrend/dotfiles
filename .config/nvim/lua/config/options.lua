@@ -6,3 +6,6 @@
 vim.g.lazyvim_eslint_auto_format = false
 -- require prettier config to use it
 vim.g.lazyvim_prettier_needs_config = true
+
+-- disable snacks.nvim animations (scroll, indent, dim, etc.)
+vim.g.snacks_animate = false
