@@ -174,8 +174,8 @@ alt-shift-l = 'move right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#resize
 
-# alt-shift-minus = 'resize smart -250'
-# alt-shift-equal = 'resize smart +250'
+alt-minus = 'resize smart -250'
+alt-equal = 'resize smart +250'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-1 = 'workspace 1'
@@ -187,7 +187,11 @@ alt-6 = 'workspace 6'
 alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
-# alt-a = 'workspace B'
+
+alt-a = 'workspace a'
+alt-s = 'workspace s'
+alt-d = 'workspace d'
+alt-f = 'workspace f'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 
@@ -201,8 +205,10 @@ alt-shift-7 = 'move-node-to-workspace 7'
 alt-shift-8 = 'move-node-to-workspace 8'
 alt-shift-9 = 'move-node-to-workspace 9'
 
-# alt-shift-a = 'move-node-to-workspace A'
-
+alt-shift-a = 'move-node-to-workspace a'
+alt-shift-s = 'move-node-to-workspace s'
+alt-shift-d = 'move-node-to-workspace d'
+alt-shift-f = 'move-node-to-workspace f'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 # Run "aerospace list-apps" to find ids
